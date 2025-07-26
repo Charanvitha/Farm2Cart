@@ -411,33 +411,73 @@ export default function Index() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <FeaturedSupplierCard
-              name="Green Valley Farms"
-              location="Punjab, India"
-              type="farmer"
-              trustScore={4.8}
-              totalOrders={156}
-              badges={["Organic Certified", "Fresh Produce"]}
-              specialties="Fresh vegetables, fruits, organic produce"
-            />
-            <FeaturedSupplierCard
-              name="Spice Masters Ltd"
-              location="Kerala, India"
-              type="wholesaler"
-              trustScore={4.6}
-              totalOrders={89}
-              badges={["Bulk Supplier", "Quality Assured"]}
-              specialties="Spices, oils, bulk commodities"
-            />
-            <FeaturedSupplierCard
-              name="Amma's Kitchen"
-              location="Tamil Nadu, India"
-              type="home_producer"
-              trustScore={4.9}
-              totalOrders={34}
-              badges={["Home Made", "Traditional Recipes"]}
-              specialties="Homemade masalas, pickles, dairy"
-            />
+            {loading ? (
+              // Loading skeletons
+              Array.from({ length: 3 }).map((_, index) => (
+                <Card key={index} className="border-farm-200 animate-pulse">
+                  <CardHeader>
+                    <div className="h-6 bg-farm-200 rounded mb-2"></div>
+                    <div className="h-4 bg-farm-100 rounded mb-3"></div>
+                    <div className="flex gap-2 mb-3">
+                      <div className="h-6 bg-farm-100 rounded w-20"></div>
+                      <div className="h-6 bg-farm-100 rounded w-16"></div>
+                    </div>
+                    <div className="h-4 bg-farm-100 rounded w-24"></div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-4 bg-farm-100 rounded mb-4"></div>
+                    <div className="text-center">
+                      <div className="h-8 bg-farm-100 rounded w-12 mx-auto mb-1"></div>
+                      <div className="h-3 bg-farm-100 rounded w-20 mx-auto"></div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : featuredSuppliers.length > 0 ? (
+              featuredSuppliers.map((supplier, index) => (
+                <FeaturedSupplierCard
+                  key={supplier.id}
+                  name={supplier.user.businessName}
+                  location={supplier.user.location}
+                  type={supplier.supplierType}
+                  trustScore={supplier.trustScore}
+                  totalOrders={supplier.totalOrders}
+                  badges={supplier.verifiedBadges}
+                  specialties={getSupplierSpecialties(supplier.supplierType)}
+                />
+              ))
+            ) : (
+              // Fallback to mock data if API fails
+              <>
+                <FeaturedSupplierCard
+                  name="Green Valley Farms"
+                  location="Punjab, India"
+                  type="farmer"
+                  trustScore={4.8}
+                  totalOrders={156}
+                  badges={["Organic Certified", "Fresh Produce"]}
+                  specialties="Fresh vegetables, fruits, organic produce"
+                />
+                <FeaturedSupplierCard
+                  name="Spice Masters Ltd"
+                  location="Kerala, India"
+                  type="wholesaler"
+                  trustScore={4.6}
+                  totalOrders={89}
+                  badges={["Bulk Supplier", "Quality Assured"]}
+                  specialties="Spices, oils, bulk commodities"
+                />
+                <FeaturedSupplierCard
+                  name="Amma's Kitchen"
+                  location="Tamil Nadu, India"
+                  type="home_producer"
+                  trustScore={4.9}
+                  totalOrders={34}
+                  badges={["Home Made", "Traditional Recipes"]}
+                  specialties="Homemade masalas, pickles, dairy"
+                />
+              </>
+            )}
           </div>
         </div>
       </section>
