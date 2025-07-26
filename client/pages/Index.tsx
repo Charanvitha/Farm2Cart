@@ -333,9 +333,12 @@ export default function Index() {
             <span className="text-farm-600">Directly from Farmers</span>
           </h1>
           <p className="text-xl text-farm-700 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Connect with verified local farmers, wholesalers, and home producers. 
-            Get the freshest vegetables, oils, masalas, and packaging materials 
+            Connect with verified local farmers, wholesalers, and home producers.
+            Get the freshest vegetables, oils, masalas, and packaging materials
             for your street food business at the best prices.
+            <br /><br />
+            <strong className="text-farm-600">🔍 100% Authentic Raw Materials</strong> -
+            Our advanced verification system prevents D-Mart bills and ensures genuine sourcing!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/register?role=vendor">
