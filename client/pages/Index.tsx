@@ -771,7 +771,7 @@ export default function Index() {
               <h4 className="font-semibold mb-4">For Suppliers</h4>
               <ul className="space-y-2 text-farm-300">
                 <li><Link to="/suppliers" className="hover:text-white transition-colors">List Products</Link></li>
-                <li><Link to="/suppliers/verification" className="hover:text-white transition-colors">Get Verified</Link></li>
+                <li><Link to="/verification" className="hover:text-white transition-colors">🔍 Get Verified</Link></li>
                 <li><Link to="/suppliers/analytics" className="hover:text-white transition-colors">Analytics</Link></li>
               </ul>
             </div>
