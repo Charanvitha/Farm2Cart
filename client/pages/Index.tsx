@@ -245,6 +245,112 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Featured Suppliers */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-farm-900 mb-4">
+              Trusted Verified Suppliers
+            </h2>
+            <p className="text-xl text-farm-700 max-w-2xl mx-auto">
+              Meet some of our top-rated suppliers who are ready to serve your business
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            <FeaturedSupplierCard
+              name="Green Valley Farms"
+              location="Punjab, India"
+              type="farmer"
+              trustScore={4.8}
+              totalOrders={156}
+              badges={["Organic Certified", "Fresh Produce"]}
+              specialties="Fresh vegetables, fruits, organic produce"
+            />
+            <FeaturedSupplierCard
+              name="Spice Masters Ltd"
+              location="Kerala, India"
+              type="wholesaler"
+              trustScore={4.6}
+              totalOrders={89}
+              badges={["Bulk Supplier", "Quality Assured"]}
+              specialties="Spices, oils, bulk commodities"
+            />
+            <FeaturedSupplierCard
+              name="Amma's Kitchen"
+              location="Tamil Nadu, India"
+              type="home_producer"
+              trustScore={4.9}
+              totalOrders={34}
+              badges={["Home Made", "Traditional Recipes"]}
+              specialties="Homemade masalas, pickles, dairy"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-20 px-4 bg-farm-50">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-farm-900 mb-4">
+              Fresh Products Available Now
+            </h2>
+            <p className="text-xl text-farm-700 max-w-2xl mx-auto">
+              Browse our latest offerings from verified suppliers
+            </p>
+          </div>
+          <div className="grid md:grid-cols-4 gap-6">
+            <FeaturedProductCard
+              name="Fresh Tomatoes"
+              price={45}
+              unit="kg"
+              supplier="Green Valley Farms"
+              supplierType="farmer"
+              trustScore={4.8}
+              image="https://images.unsplash.com/photo-1546470427-e26264be0b0c?w=400"
+              category="vegetables"
+            />
+            <FeaturedProductCard
+              name="Premium Cooking Oil"
+              price={150}
+              unit="liter"
+              supplier="Spice Masters Ltd"
+              supplierType="wholesaler"
+              trustScore={4.6}
+              image="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400"
+              category="oils"
+            />
+            <FeaturedProductCard
+              name="Garam Masala"
+              price={280}
+              unit="kg"
+              supplier="Amma's Kitchen"
+              supplierType="home_producer"
+              trustScore={4.9}
+              image="https://images.unsplash.com/photo-1596040033229-a9821ebc227e?w=400"
+              category="spices"
+            />
+            <FeaturedProductCard
+              name="Fresh Onions"
+              price={35}
+              unit="kg"
+              supplier="Green Valley Farms"
+              supplierType="farmer"
+              trustScore={4.8}
+              image="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400"
+              category="vegetables"
+            />
+          </div>
+          <div className="text-center mt-12">
+            <Link to="/login">
+              <Button size="lg" className="bg-farm-600 hover:bg-farm-700 text-white px-8 py-4">
+                View All Products
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 px-4 bg-farm-600">
         <div className="container mx-auto text-center">
