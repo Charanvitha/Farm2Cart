@@ -645,7 +645,7 @@ export default function Index() {
             )}
           </div>
           <div className="text-center mt-12">
-            <Link to="/suppliers">
+            <Link to="/products">
               <Button size="lg" className="bg-farm-600 hover:bg-farm-700 text-white px-8 py-4">
                 View All Products
               </Button>
