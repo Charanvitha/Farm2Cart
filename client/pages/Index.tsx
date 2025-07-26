@@ -300,6 +300,9 @@ export default function Index() {
             <Link to="/products" className="text-farm-700 hover:text-farm-800 transition-colors font-medium">
               Browse Products
             </Link>
+            <Link to="/verification" className="text-farm-700 hover:text-farm-800 transition-colors font-medium">
+              🔍 Verification
+            </Link>
             <a href="#how-it-works" className="text-farm-700 hover:text-farm-800 transition-colors">How it Works</a>
             <a href="#benefits" className="text-farm-700 hover:text-farm-800 transition-colors">Benefits</a>
           </nav>
