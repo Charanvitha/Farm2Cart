@@ -249,11 +249,11 @@ export default function Index() {
     }
   ];
 
-  const stats = [
-    { number: "500+", label: "Verified Suppliers" },
-    { number: "1000+", label: "Street Food Vendors" },
-    { number: "50+", label: "Product Categories" },
-    { number: "98%", label: "Customer Satisfaction" }
+  const statsDisplay = [
+    { number: `${stats.totalSuppliers}+`, label: "Verified Suppliers" },
+    { number: `${stats.totalVendors}+`, label: "Street Food Vendors" },
+    { number: `${stats.totalProducts}+`, label: "Product Categories" },
+    { number: `${stats.customerSatisfaction}%`, label: "Customer Satisfaction" }
   ];
 
   return (
