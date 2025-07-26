@@ -362,10 +362,10 @@ function getDocumentMimeType(type: DocumentType): string {
   return mimeTypes[type] || "application/octet-stream";
 }
 
-async function analyzeImage(imageData: string, type: string): Promise<any> {
+async function runAIImageAnalysis(imageData: string, type: string): Promise<any> {
   // Mock AI analysis - in production, use actual ML models
   await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate processing time
-  
+
   return {
     duplicateScore: Math.random() * 0.3, // Low chance of duplicate
     retailStoreDetected: Math.random() < 0.1, // 10% chance of retail store detection
