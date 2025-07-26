@@ -40,37 +40,39 @@ function FeaturedSupplierCard({
   specialties: string;
 }) {
   return (
-    <Card className="border-farm-200 hover:shadow-lg transition-shadow">
-      <CardHeader>
-        <div className="flex items-center justify-between mb-2">
-          <CardTitle className="text-lg text-farm-900">{name}</CardTitle>
-          <VerificationBadge type="verified" size="sm" />
-        </div>
-        <CardDescription className="flex items-center gap-1 text-farm-600 mb-3">
-          <MapPin className="h-3 w-3" />
-          {location}
-        </CardDescription>
+    <Link to={`/suppliers?search=${encodeURIComponent(name)}`}>
+      <Card className="border-farm-200 hover:shadow-lg transition-shadow cursor-pointer hover:border-farm-300">
+        <CardHeader>
+          <div className="flex items-center justify-between mb-2">
+            <CardTitle className="text-lg text-farm-900">{name}</CardTitle>
+            <VerificationBadge type="verified" size="sm" />
+          </div>
+          <CardDescription className="flex items-center gap-1 text-farm-600 mb-3">
+            <MapPin className="h-3 w-3" />
+            {location}
+          </CardDescription>
 
-        <div className="flex flex-wrap gap-1 mb-3">
-          <VerificationBadge type={type} size="sm" />
-          {badges.map((badge, index) => {
-            if (badge.toLowerCase().includes("organic")) {
-              return <VerificationBadge key={index} type="organic" size="sm" />;
-            }
-            return <VerificationBadge key={index} type="quality" size="sm" />;
-          })}
-        </div>
+          <div className="flex flex-wrap gap-1 mb-3">
+            <VerificationBadge type={type} size="sm" />
+            {badges.map((badge, index) => {
+              if (badge.toLowerCase().includes("organic")) {
+                return <VerificationBadge key={index} type="organic" size="sm" />;
+              }
+              return <VerificationBadge key={index} type="quality" size="sm" />;
+            })}
+          </div>
 
-        <TrustScore score={trustScore} totalRatings={totalOrders} size="sm" />
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm text-farm-600 mb-4">{specialties}</p>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-farm-600">{totalOrders}</div>
-          <div className="text-xs text-muted-foreground">Successful Orders</div>
-        </div>
-      </CardContent>
-    </Card>
+          <TrustScore score={trustScore} totalRatings={totalOrders} size="sm" />
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-farm-600 mb-4">{specialties}</p>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-farm-600">{totalOrders}</div>
+            <div className="text-xs text-muted-foreground">Successful Orders</div>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
 
