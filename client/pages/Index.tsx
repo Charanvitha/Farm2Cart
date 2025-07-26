@@ -153,6 +153,12 @@ const getSupplierSpecialties = (type: string) => {
 export default function Index() {
   const [featuredSuppliers, setFeaturedSuppliers] = useState<any[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<ProductWithSupplier[]>([]);
+  const [stats, setStats] = useState({
+    totalVendors: 1000,
+    totalSuppliers: 500,
+    totalProducts: 50,
+    customerSatisfaction: 98
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
