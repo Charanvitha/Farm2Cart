@@ -494,46 +494,84 @@ export default function Index() {
             </p>
           </div>
           <div className="grid md:grid-cols-4 gap-6">
-            <FeaturedProductCard
-              name="Fresh Tomatoes"
-              price={45}
-              unit="kg"
-              supplier="Green Valley Farms"
-              supplierType="farmer"
-              trustScore={4.8}
-              image="https://images.unsplash.com/photo-1546470427-e26264be0b0c?w=400"
-              category="vegetables"
-            />
-            <FeaturedProductCard
-              name="Premium Cooking Oil"
-              price={150}
-              unit="liter"
-              supplier="Spice Masters Ltd"
-              supplierType="wholesaler"
-              trustScore={4.6}
-              image="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400"
-              category="oils"
-            />
-            <FeaturedProductCard
-              name="Garam Masala"
-              price={280}
-              unit="kg"
-              supplier="Amma's Kitchen"
-              supplierType="home_producer"
-              trustScore={4.9}
-              image="https://images.unsplash.com/photo-1596040033229-a9821ebc227e?w=400"
-              category="spices"
-            />
-            <FeaturedProductCard
-              name="Fresh Onions"
-              price={35}
-              unit="kg"
-              supplier="Green Valley Farms"
-              supplierType="farmer"
-              trustScore={4.8}
-              image="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400"
-              category="vegetables"
-            />
+            {loading ? (
+              // Loading skeletons for products
+              Array.from({ length: 4 }).map((_, index) => (
+                <Card key={index} className="border-farm-200 animate-pulse">
+                  <div className="h-40 bg-farm-200 rounded-t-lg"></div>
+                  <CardHeader className="pb-2">
+                    <div className="h-5 bg-farm-200 rounded mb-2"></div>
+                    <div className="h-6 bg-farm-200 rounded w-20"></div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="h-4 bg-farm-100 rounded mb-3"></div>
+                    <div className="flex gap-1 mb-3">
+                      <div className="h-5 bg-farm-100 rounded w-16"></div>
+                      <div className="h-5 bg-farm-100 rounded w-12"></div>
+                    </div>
+                    <div className="h-4 bg-farm-100 rounded w-20"></div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : featuredProducts.length > 0 ? (
+              featuredProducts.map((product) => (
+                <FeaturedProductCard
+                  key={product.id}
+                  name={product.name}
+                  price={product.price}
+                  unit={product.unit}
+                  supplier={product.supplier.user.businessName}
+                  supplierType={product.supplier.supplierType}
+                  trustScore={product.supplier.trustScore}
+                  image={product.images[0] || '/placeholder.svg'}
+                  category={product.category}
+                />
+              ))
+            ) : (
+              // Fallback to mock data if API fails
+              <>
+                <FeaturedProductCard
+                  name="Fresh Tomatoes"
+                  price={45}
+                  unit="kg"
+                  supplier="Green Valley Farms"
+                  supplierType="farmer"
+                  trustScore={4.8}
+                  image="https://images.unsplash.com/photo-1546470427-e26264be0b0c?w=400"
+                  category="vegetables"
+                />
+                <FeaturedProductCard
+                  name="Premium Cooking Oil"
+                  price={150}
+                  unit="liter"
+                  supplier="Spice Masters Ltd"
+                  supplierType="wholesaler"
+                  trustScore={4.6}
+                  image="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400"
+                  category="oils"
+                />
+                <FeaturedProductCard
+                  name="Garam Masala"
+                  price={280}
+                  unit="kg"
+                  supplier="Amma's Kitchen"
+                  supplierType="home_producer"
+                  trustScore={4.9}
+                  image="https://images.unsplash.com/photo-1596040033229-a9821ebc227e?w=400"
+                  category="spices"
+                />
+                <FeaturedProductCard
+                  name="Fresh Onions"
+                  price={35}
+                  unit="kg"
+                  supplier="Green Valley Farms"
+                  supplierType="farmer"
+                  trustScore={4.8}
+                  image="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400"
+                  category="vegetables"
+                />
+              </>
+            )}
           </div>
           <div className="text-center mt-12">
             <Link to="/login">
