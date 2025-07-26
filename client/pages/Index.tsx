@@ -136,6 +136,20 @@ function FeaturedProductCard({
   );
 }
 
+// Helper function to get supplier specialties
+const getSupplierSpecialties = (type: string) => {
+  switch (type) {
+    case "farmer":
+      return "Fresh vegetables, fruits, organic produce";
+    case "wholesaler":
+      return "Spices, oils, bulk commodities";
+    case "home_producer":
+      return "Homemade masalas, pickles, dairy";
+    default:
+      return "Quality ingredients and supplies";
+  }
+};
+
 export default function Index() {
   const [featuredSuppliers, setFeaturedSuppliers] = useState<any[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<ProductWithSupplier[]>([]);
