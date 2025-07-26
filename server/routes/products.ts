@@ -131,7 +131,10 @@ const mockProducts: ProductWithSupplier[] = [
     price: 35,
     unit: "kg",
     quantity: 800,
-    images: ["https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400"],
+    images: [
+      "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1508747703725-719777637510?w=400&h=300&fit=crop"
+    ],
     isAvailable: true,
     lastUpdated: "2024-01-20T10:30:00Z",
     createdAt: "2024-01-15T00:00:00Z",
