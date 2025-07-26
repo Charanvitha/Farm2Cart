@@ -99,6 +99,9 @@ export const getAdminStats: RequestHandler = (req, res) => {
       totalProducts: 342,
       totalOrders: 1247,
       pendingVerifications: mockPendingVerifications.length,
+      pendingDocuments: 3, // Mock pending documents
+      pendingLivePhotos: 5, // Mock pending live photos
+      flaggedImages: 2, // Mock flagged images
       averageTrustScore: 4.7
     };
 
