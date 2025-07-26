@@ -19,6 +19,121 @@ import {
   Package
 } from "lucide-react";
 
+// Featured Supplier Card Component
+function FeaturedSupplierCard({
+  name,
+  location,
+  type,
+  trustScore,
+  totalOrders,
+  badges,
+  specialties
+}: {
+  name: string;
+  location: string;
+  type: "farmer" | "wholesaler" | "home_producer";
+  trustScore: number;
+  totalOrders: number;
+  badges: string[];
+  specialties: string;
+}) {
+  return (
+    <Card className="border-farm-200 hover:shadow-lg transition-shadow">
+      <CardHeader>
+        <div className="flex items-center justify-between mb-2">
+          <CardTitle className="text-lg text-farm-900">{name}</CardTitle>
+          <VerificationBadge type="verified" size="sm" />
+        </div>
+        <CardDescription className="flex items-center gap-1 text-farm-600 mb-3">
+          <MapPin className="h-3 w-3" />
+          {location}
+        </CardDescription>
+
+        <div className="flex flex-wrap gap-1 mb-3">
+          <VerificationBadge type={type} size="sm" />
+          {badges.map((badge, index) => {
+            if (badge.toLowerCase().includes("organic")) {
+              return <VerificationBadge key={index} type="organic" size="sm" />;
+            }
+            return <VerificationBadge key={index} type="quality" size="sm" />;
+          })}
+        </div>
+
+        <TrustScore score={trustScore} totalRatings={totalOrders} size="sm" />
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-farm-600 mb-4">{specialties}</p>
+        <div className="text-center">
+          <div className="text-2xl font-bold text-farm-600">{totalOrders}</div>
+          <div className="text-xs text-muted-foreground">Successful Orders</div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Featured Product Card Component
+function FeaturedProductCard({
+  name,
+  price,
+  unit,
+  supplier,
+  supplierType,
+  trustScore,
+  image,
+  category
+}: {
+  name: string;
+  price: number;
+  unit: string;
+  supplier: string;
+  supplierType: "farmer" | "wholesaler" | "home_producer";
+  trustScore: number;
+  image: string;
+  category: string;
+}) {
+  const getCategoryColor = (category: string) => {
+    const colors: Record<string, string> = {
+      vegetables: "bg-green-100 text-green-800",
+      oils: "bg-yellow-100 text-yellow-800",
+      spices: "bg-red-100 text-red-800"
+    };
+    return colors[category] || "bg-gray-100 text-gray-800";
+  };
+
+  return (
+    <Card className="border-farm-200 hover:shadow-lg transition-shadow">
+      <div className="relative">
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-40 object-cover rounded-t-lg"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = '/placeholder.svg';
+          }}
+        />
+        <Badge className={`absolute top-2 left-2 ${getCategoryColor(category)}`}>
+          {category}
+        </Badge>
+      </div>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base text-farm-900">{name}</CardTitle>
+        <div className="text-lg font-bold text-farm-600">₹{price}/{unit}</div>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-3">
+          <p className="text-sm font-medium text-farm-800">{supplier}</p>
+          <div className="flex items-center gap-1 mt-1">
+            <VerificationBadge type={supplierType} size="sm" />
+            <VerificationBadge type="verified" size="sm" />
+          </div>
+        </div>
+        <TrustScore score={trustScore} size="sm" showCount={false} />
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function Index() {
   const benefits = [
     {
