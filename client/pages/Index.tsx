@@ -17,7 +17,9 @@ import {
   TrendingUp,
   Heart,
   Zap,
-  Package
+  Package,
+  FileText,
+  Camera
 } from "lucide-react";
 import type { ApiResponse, PaginatedResponse, ProductWithSupplier } from "@shared/api";
 
