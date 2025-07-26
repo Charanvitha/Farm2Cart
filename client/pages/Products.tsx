@@ -43,8 +43,11 @@ export default function Products() {
       params.append("page", currentPage.toString());
       params.append("limit", "12");
 
-      const response = await fetch(`/api/products?${params.toString()}`);
-      
+      const response = await fetch(`/api/products?${params.toString()}`, {
+        headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(15000) // 15 second timeout
+      });
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
