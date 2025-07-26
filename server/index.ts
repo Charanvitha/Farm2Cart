@@ -35,6 +35,17 @@ import {
   getTrustScoreAnalytics
 } from "./routes/admin";
 
+import {
+  uploadDocument,
+  uploadLivePhoto,
+  analyzeImage,
+  getSupplierDocuments,
+  getSupplierLivePhotos,
+  getPendingReviews,
+  verifyDocument,
+  verifyLivePhoto
+} from "./routes/verification";
+
 export function createServer() {
   const app = express();
 
