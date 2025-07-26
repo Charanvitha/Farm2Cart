@@ -1,30 +1,42 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { 
-  FileText, 
-  Camera, 
-  Shield, 
-  AlertTriangle, 
-  Check, 
+import {
+  FileText,
+  Camera,
+  Shield,
+  AlertTriangle,
+  Check,
   X,
   Eye,
   MapPin,
   Clock,
   Zap,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
-import type { 
-  ApiResponse, 
-  UploadedDocument, 
-  LiveInventoryPhoto, 
+import type {
+  ApiResponse,
+  UploadedDocument,
+  LiveInventoryPhoto,
   VerifyDocumentRequest,
-  VerifyLivePhotoRequest 
+  VerifyLivePhotoRequest,
 } from "@shared/api";
 
 interface PendingReviews {
@@ -37,11 +49,14 @@ export function VerificationDashboard() {
   const [pendingReviews, setPendingReviews] = useState<PendingReviews>({
     documents: [],
     livePhotos: [],
-    flaggedPhotos: []
+    flaggedPhotos: [],
   });
   const [loading, setLoading] = useState(true);
-  const [selectedDocument, setSelectedDocument] = useState<UploadedDocument | null>(null);
-  const [selectedPhoto, setSelectedPhoto] = useState<LiveInventoryPhoto | null>(null);
+  const [selectedDocument, setSelectedDocument] =
+    useState<UploadedDocument | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<LiveInventoryPhoto | null>(
+    null,
+  );
   const [reviewReason, setReviewReason] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -52,74 +67,80 @@ export function VerificationDashboard() {
   const fetchPendingReviews = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/verification/pending-reviews');
+      const response = await fetch("/api/verification/pending-reviews");
       const data: ApiResponse<PendingReviews> = await response.json();
-      
+
       if (data.success && data.data) {
         setPendingReviews(data.data);
       }
     } catch (error) {
-      console.error('Failed to fetch pending reviews:', error);
+      console.error("Failed to fetch pending reviews:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const verifyDocument = async (documentId: string, status: 'verified' | 'rejected') => {
+  const verifyDocument = async (
+    documentId: string,
+    status: "verified" | "rejected",
+  ) => {
     try {
       setSubmitting(true);
-      
+
       const requestData: VerifyDocumentRequest = {
         documentId,
         status,
-        reason: status === 'rejected' ? reviewReason : undefined
+        reason: status === "rejected" ? reviewReason : undefined,
       };
 
-      const response = await fetch('/api/verification/verify-document', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestData)
+      const response = await fetch("/api/verification/verify-document", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
       });
 
       const data: ApiResponse<UploadedDocument> = await response.json();
-      
+
       if (data.success) {
         await fetchPendingReviews();
         setSelectedDocument(null);
         setReviewReason("");
       }
     } catch (error) {
-      console.error('Failed to verify document:', error);
+      console.error("Failed to verify document:", error);
     } finally {
       setSubmitting(false);
     }
   };
 
-  const verifyLivePhoto = async (photoId: string, status: 'verified' | 'flagged' | 'rejected') => {
+  const verifyLivePhoto = async (
+    photoId: string,
+    status: "verified" | "flagged" | "rejected",
+  ) => {
     try {
       setSubmitting(true);
-      
+
       const requestData: VerifyLivePhotoRequest = {
         photoId,
         status,
-        reason: status !== 'verified' ? reviewReason : undefined
+        reason: status !== "verified" ? reviewReason : undefined,
       };
 
-      const response = await fetch('/api/verification/verify-live-photo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestData)
+      const response = await fetch("/api/verification/verify-live-photo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
       });
 
       const data: ApiResponse<LiveInventoryPhoto> = await response.json();
-      
+
       if (data.success) {
         await fetchPendingReviews();
         setSelectedPhoto(null);
         setReviewReason("");
       }
     } catch (error) {
-      console.error('Failed to verify photo:', error);
+      console.error("Failed to verify photo:", error);
     } finally {
       setSubmitting(false);
     }
@@ -127,18 +148,21 @@ export function VerificationDashboard() {
 
   const getDocumentTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      purchase_bill: 'Purchase Bill',
-      mandi_receipt: 'Mandi Receipt',
-      harvest_log: 'Harvest Log',
-      business_license: 'Business License',
-      identity_proof: 'Identity Proof',
-      food_safety_cert: 'Food Safety Certificate'
+      purchase_bill: "Purchase Bill",
+      mandi_receipt: "Mandi Receipt",
+      harvest_log: "Harvest Log",
+      business_license: "Business License",
+      identity_proof: "Identity Proof",
+      food_safety_cert: "Food Safety Certificate",
     };
     return labels[type] || type;
   };
 
-  const formatLocation = (location?: { latitude: number; longitude: number }) => {
-    if (!location) return 'No location data';
+  const formatLocation = (location?: {
+    latitude: number;
+    longitude: number;
+  }) => {
+    if (!location) return "No location data";
     return `${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}`;
   };
 
@@ -171,37 +195,43 @@ export function VerificationDashboard() {
             <div className="flex items-center gap-2">
               <FileText className="h-5 w-5 text-blue-600" />
               <div>
-                <div className="text-2xl font-bold">{pendingReviews.documents.length}</div>
+                <div className="text-2xl font-bold">
+                  {pendingReviews.documents.length}
+                </div>
                 <div className="text-sm text-gray-600">Pending Documents</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
               <Camera className="h-5 w-5 text-green-600" />
               <div>
-                <div className="text-2xl font-bold">{pendingReviews.livePhotos.length}</div>
+                <div className="text-2xl font-bold">
+                  {pendingReviews.livePhotos.length}
+                </div>
                 <div className="text-sm text-gray-600">Live Photos</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-orange-600" />
               <div>
-                <div className="text-2xl font-bold">{pendingReviews.flaggedPhotos.length}</div>
+                <div className="text-2xl font-bold">
+                  {pendingReviews.flaggedPhotos.length}
+                </div>
                 <div className="text-sm text-gray-600">Flagged Photos</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
@@ -249,10 +279,15 @@ export function VerificationDashboard() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {pendingReviews.documents.map((doc) => (
-                    <Card key={doc.id} className="cursor-pointer hover:shadow-md transition-shadow">
+                    <Card
+                      key={doc.id}
+                      className="cursor-pointer hover:shadow-md transition-shadow"
+                    >
                       <CardHeader>
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-sm">{getDocumentTypeLabel(doc.type)}</CardTitle>
+                          <CardTitle className="text-sm">
+                            {getDocumentTypeLabel(doc.type)}
+                          </CardTitle>
                           <Badge variant="secondary">Pending</Badge>
                         </div>
                         <CardDescription className="text-xs">
@@ -261,12 +296,21 @@ export function VerificationDashboard() {
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2 text-xs">
-                          <div>Size: {(doc.metadata?.fileSize || 0 / 1024 / 1024).toFixed(2)} MB</div>
-                          <div>Uploaded: {new Date(doc.uploadedAt).toLocaleDateString()}</div>
+                          <div>
+                            Size:{" "}
+                            {(
+                              doc.metadata?.fileSize || 0 / 1024 / 1024
+                            ).toFixed(2)}{" "}
+                            MB
+                          </div>
+                          <div>
+                            Uploaded:{" "}
+                            {new Date(doc.uploadedAt).toLocaleDateString()}
+                          </div>
                         </div>
-                        <Button 
+                        <Button
                           onClick={() => setSelectedDocument(doc)}
-                          size="sm" 
+                          size="sm"
                           className="w-full mt-3"
                         >
                           <Eye className="mr-2 h-3 w-3" />
@@ -288,18 +332,23 @@ export function VerificationDashboard() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {pendingReviews.livePhotos.map((photo) => (
-                    <Card key={photo.id} className="cursor-pointer hover:shadow-md transition-shadow">
+                    <Card
+                      key={photo.id}
+                      className="cursor-pointer hover:shadow-md transition-shadow"
+                    >
                       <CardHeader>
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-sm">Live Inventory Photo</CardTitle>
+                          <CardTitle className="text-sm">
+                            Live Inventory Photo
+                          </CardTitle>
                           <Badge variant="secondary">Pending</Badge>
                         </div>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2">
-                          <img 
-                            src={photo.imageUrl} 
-                            alt="Live inventory" 
+                          <img
+                            src={photo.imageUrl}
+                            alt="Live inventory"
                             className="w-full h-32 object-cover rounded"
                           />
                           <div className="text-xs space-y-1">
@@ -314,14 +363,15 @@ export function VerificationDashboard() {
                             {photo.aiAnalysis && (
                               <div className="flex items-center gap-1">
                                 <Zap className="h-3 w-3" />
-                                Confidence: {Math.round(photo.aiAnalysis.confidence * 100)}%
+                                Confidence:{" "}
+                                {Math.round(photo.aiAnalysis.confidence * 100)}%
                               </div>
                             )}
                           </div>
                         </div>
-                        <Button 
+                        <Button
                           onClick={() => setSelectedPhoto(photo)}
-                          size="sm" 
+                          size="sm"
                           className="w-full mt-3"
                         >
                           <Eye className="mr-2 h-3 w-3" />
@@ -346,31 +396,38 @@ export function VerificationDashboard() {
                     <Card key={photo.id} className="border-orange-200">
                       <CardHeader>
                         <div className="flex items-center justify-between">
-                          <CardTitle className="text-sm">Flagged Photo</CardTitle>
-                          <Badge className="bg-orange-100 text-orange-800">Flagged</Badge>
+                          <CardTitle className="text-sm">
+                            Flagged Photo
+                          </CardTitle>
+                          <Badge className="bg-orange-100 text-orange-800">
+                            Flagged
+                          </Badge>
                         </div>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2">
-                          <img 
-                            src={photo.imageUrl} 
-                            alt="Flagged content" 
+                          <img
+                            src={photo.imageUrl}
+                            alt="Flagged content"
                             className="w-full h-32 object-cover rounded"
                           />
                           {photo.aiAnalysis && (
                             <Alert variant="destructive">
                               <AlertTriangle className="h-4 w-4" />
                               <AlertDescription>
-                                {photo.aiAnalysis.retailStoreDetected && "Retail store detected. "}
-                                {photo.aiAnalysis.duplicateScore > 0.7 && "Possible duplicate image. "}
-                                Confidence: {Math.round(photo.aiAnalysis.confidence * 100)}%
+                                {photo.aiAnalysis.retailStoreDetected &&
+                                  "Retail store detected. "}
+                                {photo.aiAnalysis.duplicateScore > 0.7 &&
+                                  "Possible duplicate image. "}
+                                Confidence:{" "}
+                                {Math.round(photo.aiAnalysis.confidence * 100)}%
                               </AlertDescription>
                             </Alert>
                           )}
                         </div>
-                        <Button 
+                        <Button
                           onClick={() => setSelectedPhoto(photo)}
-                          size="sm" 
+                          size="sm"
                           className="w-full mt-3"
                           variant="outline"
                         >
@@ -388,7 +445,10 @@ export function VerificationDashboard() {
       </Card>
 
       {/* Document Review Dialog */}
-      <Dialog open={!!selectedDocument} onOpenChange={() => setSelectedDocument(null)}>
+      <Dialog
+        open={!!selectedDocument}
+        onOpenChange={() => setSelectedDocument(null)}
+      >
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Review Document</DialogTitle>
@@ -401,17 +461,26 @@ export function VerificationDashboard() {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>Type: {getDocumentTypeLabel(selectedDocument.type)}</div>
                 <div>File: {selectedDocument.fileName}</div>
-                <div>Size: {(selectedDocument.metadata?.fileSize || 0 / 1024 / 1024).toFixed(2)} MB</div>
-                <div>Uploaded: {new Date(selectedDocument.uploadedAt).toLocaleDateString()}</div>
+                <div>
+                  Size:{" "}
+                  {(
+                    selectedDocument.metadata?.fileSize || 0 / 1024 / 1024
+                  ).toFixed(2)}{" "}
+                  MB
+                </div>
+                <div>
+                  Uploaded:{" "}
+                  {new Date(selectedDocument.uploadedAt).toLocaleDateString()}
+                </div>
               </div>
-              
+
               <div className="border rounded-lg p-4 bg-gray-50">
                 <p className="text-sm text-center text-gray-600">
                   Document preview would be displayed here
                   <br />
-                  <a 
-                    href={selectedDocument.fileUrl} 
-                    target="_blank" 
+                  <a
+                    href={selectedDocument.fileUrl}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline"
                   >
@@ -421,7 +490,9 @@ export function VerificationDashboard() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Reason (if rejecting):</label>
+                <label className="block text-sm font-medium mb-2">
+                  Reason (if rejecting):
+                </label>
                 <Textarea
                   value={reviewReason}
                   onChange={(e) => setReviewReason(e.target.value)}
@@ -431,16 +502,20 @@ export function VerificationDashboard() {
               </div>
 
               <div className="flex gap-2">
-                <Button 
-                  onClick={() => verifyDocument(selectedDocument.id, 'verified')}
+                <Button
+                  onClick={() =>
+                    verifyDocument(selectedDocument.id, "verified")
+                  }
                   disabled={submitting}
                   className="flex-1 bg-green-600 hover:bg-green-700"
                 >
                   <Check className="mr-2 h-4 w-4" />
                   Approve
                 </Button>
-                <Button 
-                  onClick={() => verifyDocument(selectedDocument.id, 'rejected')}
+                <Button
+                  onClick={() =>
+                    verifyDocument(selectedDocument.id, "rejected")
+                  }
                   disabled={submitting || !reviewReason.trim()}
                   variant="destructive"
                   className="flex-1"
@@ -455,7 +530,10 @@ export function VerificationDashboard() {
       </Dialog>
 
       {/* Photo Review Dialog */}
-      <Dialog open={!!selectedPhoto} onOpenChange={() => setSelectedPhoto(null)}>
+      <Dialog
+        open={!!selectedPhoto}
+        onOpenChange={() => setSelectedPhoto(null)}
+      >
         <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle>Review Live Photo</DialogTitle>
@@ -466,9 +544,9 @@ export function VerificationDashboard() {
           {selectedPhoto && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <img 
-                  src={selectedPhoto.imageUrl} 
-                  alt="Live inventory" 
+                <img
+                  src={selectedPhoto.imageUrl}
+                  alt="Live inventory"
                   className="w-full rounded-lg"
                 />
                 <div className="space-y-3">
@@ -487,9 +565,26 @@ export function VerificationDashboard() {
                     <div className="border rounded-lg p-3 bg-gray-50">
                       <h4 className="font-medium mb-2">AI Analysis</h4>
                       <div className="text-sm space-y-1">
-                        <div>Confidence: {Math.round(selectedPhoto.aiAnalysis.confidence * 100)}%</div>
-                        <div>Duplicate Score: {Math.round(selectedPhoto.aiAnalysis.duplicateScore * 100)}%</div>
-                        <div>Retail Store: {selectedPhoto.aiAnalysis.retailStoreDetected ? 'Detected' : 'Not detected'}</div>
+                        <div>
+                          Confidence:{" "}
+                          {Math.round(
+                            selectedPhoto.aiAnalysis.confidence * 100,
+                          )}
+                          %
+                        </div>
+                        <div>
+                          Duplicate Score:{" "}
+                          {Math.round(
+                            selectedPhoto.aiAnalysis.duplicateScore * 100,
+                          )}
+                          %
+                        </div>
+                        <div>
+                          Retail Store:{" "}
+                          {selectedPhoto.aiAnalysis.retailStoreDetected
+                            ? "Detected"
+                            : "Not detected"}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -497,7 +592,9 @@ export function VerificationDashboard() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Reason (if flagging/rejecting):</label>
+                <label className="block text-sm font-medium mb-2">
+                  Reason (if flagging/rejecting):
+                </label>
                 <Textarea
                   value={reviewReason}
                   onChange={(e) => setReviewReason(e.target.value)}
@@ -507,16 +604,16 @@ export function VerificationDashboard() {
               </div>
 
               <div className="flex gap-2">
-                <Button 
-                  onClick={() => verifyLivePhoto(selectedPhoto.id, 'verified')}
+                <Button
+                  onClick={() => verifyLivePhoto(selectedPhoto.id, "verified")}
                   disabled={submitting}
                   className="flex-1 bg-green-600 hover:bg-green-700"
                 >
                   <Check className="mr-2 h-4 w-4" />
                   Approve
                 </Button>
-                <Button 
-                  onClick={() => verifyLivePhoto(selectedPhoto.id, 'flagged')}
+                <Button
+                  onClick={() => verifyLivePhoto(selectedPhoto.id, "flagged")}
                   disabled={submitting}
                   variant="outline"
                   className="flex-1"
@@ -524,8 +621,8 @@ export function VerificationDashboard() {
                   <AlertTriangle className="mr-2 h-4 w-4" />
                   Flag
                 </Button>
-                <Button 
-                  onClick={() => verifyLivePhoto(selectedPhoto.id, 'rejected')}
+                <Button
+                  onClick={() => verifyLivePhoto(selectedPhoto.id, "rejected")}
                   disabled={submitting}
                   variant="destructive"
                   className="flex-1"

@@ -2,28 +2,46 @@ import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { ProductCard } from "@/components/ProductCard";
-import { 
-  ShoppingCart, 
-  Search, 
-  Filter, 
+import {
+  ShoppingCart,
+  Search,
+  Filter,
   ArrowLeft,
   Loader2,
   Package,
-  Star
+  Star,
 } from "lucide-react";
-import type { ApiResponse, PaginatedResponse, ProductWithSupplier } from "@shared/api";
+import type {
+  ApiResponse,
+  PaginatedResponse,
+  ProductWithSupplier,
+} from "@shared/api";
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<ProductWithSupplier[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState(searchParams.get("search") || "");
-  const [category, setCategory] = useState(searchParams.get("category") || "all");
-  const [supplierType, setSupplierType] = useState(searchParams.get("supplierType") || "all");
-  const [onlyVerified, setOnlyVerified] = useState(searchParams.get("verified") === "true");
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get("search") || "",
+  );
+  const [category, setCategory] = useState(
+    searchParams.get("category") || "all",
+  );
+  const [supplierType, setSupplierType] = useState(
+    searchParams.get("supplierType") || "all",
+  );
+  const [onlyVerified, setOnlyVerified] = useState(
+    searchParams.get("verified") === "true",
+  );
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -34,7 +52,7 @@ export default function Products() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      
+
       const params = new URLSearchParams();
       if (searchTerm) params.append("search", searchTerm);
       if (category !== "all") params.append("category", category);
@@ -44,16 +62,17 @@ export default function Products() {
       params.append("limit", "12");
 
       const response = await fetch(`/api/products?${params.toString()}`, {
-        headers: { 'Content-Type': 'application/json' },
-        signal: AbortSignal.timeout(15000) // 15 second timeout
+        headers: { "Content-Type": "application/json" },
+        signal: AbortSignal.timeout(15000), // 15 second timeout
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
-      const data: ApiResponse<PaginatedResponse<ProductWithSupplier>> = await response.json();
-      
+
+      const data: ApiResponse<PaginatedResponse<ProductWithSupplier>> =
+        await response.json();
+
       if (data.success && data.data) {
         setProducts(data.data.data);
         setTotalCount(data.data.total);
@@ -75,7 +94,7 @@ export default function Products() {
 
   const handleFilterChange = (key: string, value: string | boolean) => {
     setCurrentPage(1);
-    
+
     switch (key) {
       case "category":
         setCategory(value as string);
@@ -87,13 +106,13 @@ export default function Products() {
         setOnlyVerified(value as boolean);
         break;
     }
-    
+
     updateURLParams({ [key]: value });
   };
 
   const updateURLParams = (updates: Record<string, string | boolean>) => {
     const newParams = new URLSearchParams(searchParams);
-    
+
     Object.entries(updates).forEach(([key, value]) => {
       if (value === "" || value === "all" || value === false) {
         newParams.delete(key);
@@ -101,7 +120,7 @@ export default function Products() {
         newParams.set(key, value.toString());
       }
     });
-    
+
     setSearchParams(newParams);
   };
 
@@ -121,7 +140,9 @@ export default function Products() {
 
   const handleViewDetails = (productId: string) => {
     // In a real app, this would show product details modal or page
-    alert(`View details for product ${productId} (Product details coming soon)`);
+    alert(
+      `View details for product ${productId} (Product details coming soon)`,
+    );
   };
 
   const totalPages = Math.ceil(totalCount / 12);
@@ -138,12 +159,21 @@ export default function Products() {
             <span className="text-2xl font-bold text-farm-800">Farm2Cart</span>
           </Link>
           <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/suppliers" className="text-farm-700 hover:text-farm-800">Suppliers</Link>
-            <Link to="/products" className="text-farm-600 font-medium">Products</Link>
-            <Link to="/login" className="text-farm-700 hover:text-farm-800">Login</Link>
+            <Link to="/suppliers" className="text-farm-700 hover:text-farm-800">
+              Suppliers
+            </Link>
+            <Link to="/products" className="text-farm-600 font-medium">
+              Products
+            </Link>
+            <Link to="/login" className="text-farm-700 hover:text-farm-800">
+              Login
+            </Link>
           </nav>
           <Link to="/">
-            <Button variant="ghost" className="text-farm-700 hover:text-farm-800 hover:bg-farm-100">
+            <Button
+              variant="ghost"
+              className="text-farm-700 hover:text-farm-800 hover:bg-farm-100"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
             </Button>
@@ -187,7 +217,12 @@ export default function Products() {
                 <label className="block text-sm font-medium text-farm-800 mb-2">
                   Category
                 </label>
-                <Select value={category} onValueChange={(value) => handleFilterChange("category", value)}>
+                <Select
+                  value={category}
+                  onValueChange={(value) =>
+                    handleFilterChange("category", value)
+                  }
+                >
                   <SelectTrigger className="border-farm-200 focus:border-farm-600">
                     <SelectValue />
                   </SelectTrigger>
@@ -209,7 +244,12 @@ export default function Products() {
                 <label className="block text-sm font-medium text-farm-800 mb-2">
                   Supplier Type
                 </label>
-                <Select value={supplierType} onValueChange={(value) => handleFilterChange("supplierType", value)}>
+                <Select
+                  value={supplierType}
+                  onValueChange={(value) =>
+                    handleFilterChange("supplierType", value)
+                  }
+                >
                   <SelectTrigger className="border-farm-200 focus:border-farm-600">
                     <SelectValue />
                   </SelectTrigger>
@@ -217,7 +257,9 @@ export default function Products() {
                     <SelectItem value="all">All Types</SelectItem>
                     <SelectItem value="farmer">Farmers</SelectItem>
                     <SelectItem value="wholesaler">Wholesalers</SelectItem>
-                    <SelectItem value="home_producer">Home Producers</SelectItem>
+                    <SelectItem value="home_producer">
+                      Home Producers
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -228,8 +270,8 @@ export default function Products() {
                   variant="outline"
                   onClick={() => handleFilterChange("verified", !onlyVerified)}
                   className={`border-farm-600 ${
-                    onlyVerified 
-                      ? "bg-farm-600 text-white hover:bg-farm-700" 
+                    onlyVerified
+                      ? "bg-farm-600 text-white hover:bg-farm-700"
                       : "text-farm-600 hover:bg-farm-50"
                   }`}
                 >
@@ -252,26 +294,41 @@ export default function Products() {
             <p className="text-farm-700">
               Found <span className="font-semibold">{totalCount}</span> products
             </p>
-            {(searchTerm || category !== "all" || supplierType !== "all" || onlyVerified) && (
+            {(searchTerm ||
+              category !== "all" ||
+              supplierType !== "all" ||
+              onlyVerified) && (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-farm-600">Filters:</span>
                 {searchTerm && (
-                  <Badge variant="secondary" className="bg-farm-100 text-farm-800">
+                  <Badge
+                    variant="secondary"
+                    className="bg-farm-100 text-farm-800"
+                  >
                     Search: {searchTerm}
                   </Badge>
                 )}
                 {category !== "all" && (
-                  <Badge variant="secondary" className="bg-farm-100 text-farm-800">
+                  <Badge
+                    variant="secondary"
+                    className="bg-farm-100 text-farm-800"
+                  >
                     Category: {category}
                   </Badge>
                 )}
                 {supplierType !== "all" && (
-                  <Badge variant="secondary" className="bg-farm-100 text-farm-800">
+                  <Badge
+                    variant="secondary"
+                    className="bg-farm-100 text-farm-800"
+                  >
                     Supplier: {supplierType}
                   </Badge>
                 )}
                 {onlyVerified && (
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
+                  <Badge
+                    variant="secondary"
+                    className="bg-green-100 text-green-800"
+                  >
                     Verified Only
                   </Badge>
                 )}
@@ -287,7 +344,10 @@ export default function Products() {
           {loading ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {Array.from({ length: 12 }).map((_, index) => (
-                <div key={index} className="bg-white rounded-lg border border-farm-200 animate-pulse">
+                <div
+                  key={index}
+                  className="bg-white rounded-lg border border-farm-200 animate-pulse"
+                >
                   <div className="h-48 bg-farm-200 rounded-t-lg"></div>
                   <div className="p-4">
                     <div className="h-5 bg-farm-200 rounded mb-2"></div>
@@ -330,7 +390,7 @@ export default function Products() {
                   >
                     Previous
                   </Button>
-                  
+
                   <div className="flex items-center gap-1">
                     {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                       let pageNum;
@@ -343,11 +403,13 @@ export default function Products() {
                       } else {
                         pageNum = currentPage - 2 + i;
                       }
-                      
+
                       return (
                         <Button
                           key={pageNum}
-                          variant={currentPage === pageNum ? "default" : "outline"}
+                          variant={
+                            currentPage === pageNum ? "default" : "outline"
+                          }
                           onClick={() => setCurrentPage(pageNum)}
                           className={
                             currentPage === pageNum
@@ -364,7 +426,9 @@ export default function Products() {
 
                   <Button
                     variant="outline"
-                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    onClick={() =>
+                      setCurrentPage(Math.min(totalPages, currentPage + 1))
+                    }
                     disabled={currentPage === totalPages}
                     className="border-farm-600 text-farm-600 hover:bg-farm-50"
                   >
@@ -384,7 +448,10 @@ export default function Products() {
               <p className="text-farm-600 mb-6">
                 Try adjusting your search criteria or filters
               </p>
-              <Button onClick={clearFilters} className="bg-farm-600 hover:bg-farm-700 text-white">
+              <Button
+                onClick={clearFilters}
+                className="bg-farm-600 hover:bg-farm-700 text-white"
+              >
                 Clear All Filters
               </Button>
             </div>

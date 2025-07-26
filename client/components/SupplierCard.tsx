@@ -1,4 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SupplierBadges } from "@/components/ui/verification-badge";
@@ -25,11 +31,11 @@ export interface SupplierCardProps {
   className?: string;
 }
 
-export function SupplierCard({ 
-  supplier, 
-  onViewProducts, 
+export function SupplierCard({
+  supplier,
+  onViewProducts,
   onContact,
-  className 
+  className,
 }: SupplierCardProps) {
   const getSupplierTypeInfo = (type: string) => {
     switch (type) {
@@ -37,25 +43,25 @@ export function SupplierCard({
         return {
           title: "Local Farmer",
           description: "Fresh produce directly from farms",
-          color: "text-farm-600"
+          color: "text-farm-600",
         };
       case "wholesaler":
         return {
           title: "Wholesaler",
           description: "Bulk supplies and commodities",
-          color: "text-blue-600"
+          color: "text-blue-600",
         };
       case "home_producer":
         return {
           title: "Home Producer",
           description: "Homemade artisan products",
-          color: "text-pink-600"
+          color: "text-pink-600",
         };
       default:
         return {
           title: "Supplier",
           description: "Quality products",
-          color: "text-gray-600"
+          color: "text-gray-600",
         };
     }
   };
@@ -63,7 +69,12 @@ export function SupplierCard({
   const typeInfo = getSupplierTypeInfo(supplier.supplierType);
 
   return (
-    <Card className={cn("hover:shadow-lg transition-shadow border-farm-200", className)}>
+    <Card
+      className={cn(
+        "hover:shadow-lg transition-shadow border-farm-200",
+        className,
+      )}
+    >
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -84,8 +95,12 @@ export function SupplierCard({
 
         {/* Supplier Type and Description */}
         <div className="mb-3">
-          <h4 className={cn("font-medium", typeInfo.color)}>{typeInfo.title}</h4>
-          <p className="text-sm text-muted-foreground">{typeInfo.description}</p>
+          <h4 className={cn("font-medium", typeInfo.color)}>
+            {typeInfo.title}
+          </h4>
+          <p className="text-sm text-muted-foreground">
+            {typeInfo.description}
+          </p>
         </div>
 
         {/* Verification Badges */}
@@ -107,23 +122,19 @@ export function SupplierCard({
             <div className="text-lg font-semibold text-farm-600">
               {supplier.totalOrders}
             </div>
-            <div className="text-xs text-muted-foreground">
-              Total Orders
-            </div>
+            <div className="text-xs text-muted-foreground">Total Orders</div>
           </div>
           <div className="text-center">
             <div className="text-lg font-semibold text-farm-600">
               {supplier.totalRatings}
             </div>
-            <div className="text-xs text-muted-foreground">
-              Reviews
-            </div>
+            <div className="text-xs text-muted-foreground">Reviews</div>
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button 
+          <Button
             onClick={() => onViewProducts?.(supplier.id)}
             className="flex-1 bg-farm-600 hover:bg-farm-700 text-white"
             size="sm"
@@ -131,7 +142,7 @@ export function SupplierCard({
             <Package className="h-4 w-4 mr-1" />
             View Products
           </Button>
-          <Button 
+          <Button
             onClick={() => onContact?.(supplier.id)}
             variant="outline"
             className="border-farm-600 text-farm-600 hover:bg-farm-50"

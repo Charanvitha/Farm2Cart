@@ -1,27 +1,35 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { 
-  ShoppingCart, 
-  Users, 
-  Leaf, 
+import {
+  ShoppingCart,
+  Users,
+  Leaf,
   Settings,
   Mail,
   Lock,
   User,
   Phone,
   MapPin,
-  Building
+  Building,
 } from "lucide-react";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
-  const [selectedRole, setSelectedRole] = useState<string>(searchParams.get("role") || "vendor");
+  const [selectedRole, setSelectedRole] = useState<string>(
+    searchParams.get("role") || "vendor",
+  );
   const [isLogin, setIsLogin] = useState(true);
 
   const roles = [
@@ -30,25 +38,26 @@ export default function Auth() {
       title: "Street Food Vendor",
       description: "Source ingredients for your food business",
       icon: <Users className="h-6 w-6" />,
-      color: "bg-farm-600"
+      color: "bg-farm-600",
     },
     {
-      id: "supplier", 
+      id: "supplier",
       title: "Supplier",
       description: "Sell your products to local vendors",
       icon: <Leaf className="h-6 w-6" />,
-      color: "bg-fresh-600"
+      color: "bg-fresh-600",
     },
     {
       id: "admin",
       title: "Admin",
       description: "Manage platform operations",
       icon: <Settings className="h-6 w-6" />,
-      color: "bg-gray-600"
-    }
+      color: "bg-gray-600",
+    },
   ];
 
-  const currentRole = roles.find(role => role.id === selectedRole) || roles[0];
+  const currentRole =
+    roles.find((role) => role.id === selectedRole) || roles[0];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,7 +70,10 @@ export default function Auth() {
     <div className="min-h-screen bg-gradient-to-br from-farm-50 to-fresh-50 flex items-center justify-center p-4">
       {/* Header */}
       <div className="absolute top-4 left-4">
-        <Link to="/" className="flex items-center space-x-2 text-farm-800 hover:text-farm-900 transition-colors">
+        <Link
+          to="/"
+          className="flex items-center space-x-2 text-farm-800 hover:text-farm-900 transition-colors"
+        >
           <div className="bg-farm-600 p-2 rounded-xl">
             <ShoppingCart className="h-5 w-5 text-white" />
           </div>
@@ -72,18 +84,25 @@ export default function Auth() {
       <div className="w-full max-w-md">
         <Card className="border-farm-200 shadow-lg">
           <CardHeader className="text-center">
-            <div className={`mx-auto ${currentRole.color} p-3 rounded-full w-16 h-16 flex items-center justify-center mb-4`}>
+            <div
+              className={`mx-auto ${currentRole.color} p-3 rounded-full w-16 h-16 flex items-center justify-center mb-4`}
+            >
               {currentRole.icon}
             </div>
             <CardTitle className="text-2xl text-farm-900">
               {isLogin ? "Welcome Back" : "Join Farm2Cart"}
             </CardTitle>
             <CardDescription className="text-farm-600">
-              {isLogin ? "Sign in to your account" : "Create your account to get started"}
+              {isLogin
+                ? "Sign in to your account"
+                : "Create your account to get started"}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs value={isLogin ? "login" : "register"} onValueChange={(value) => setIsLogin(value === "login")}>
+            <Tabs
+              value={isLogin ? "login" : "register"}
+              onValueChange={(value) => setIsLogin(value === "login")}
+            >
               <TabsList className="grid w-full grid-cols-2 mb-6">
                 <TabsTrigger value="login">Login</TabsTrigger>
                 <TabsTrigger value="register">Register</TabsTrigger>
@@ -107,15 +126,21 @@ export default function Auth() {
                       }`}
                     >
                       <div className="flex items-center space-x-3">
-                        <div className={`${role.color} p-2 rounded-md text-white`}>
+                        <div
+                          className={`${role.color} p-2 rounded-md text-white`}
+                        >
                           {role.icon}
                         </div>
                         <div>
                           <div className="font-medium">{role.title}</div>
-                          <div className="text-sm text-farm-600">{role.description}</div>
+                          <div className="text-sm text-farm-600">
+                            {role.description}
+                          </div>
                         </div>
                         {selectedRole === role.id && (
-                          <Badge className="ml-auto bg-farm-600 text-white">Selected</Badge>
+                          <Badge className="ml-auto bg-farm-600 text-white">
+                            Selected
+                          </Badge>
                         )}
                       </div>
                     </button>
@@ -126,7 +151,9 @@ export default function Auth() {
               <TabsContent value="login">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <Label htmlFor="email" className="text-farm-800">Email</Label>
+                    <Label htmlFor="email" className="text-farm-800">
+                      Email
+                    </Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-farm-500" />
                       <Input
@@ -139,7 +166,9 @@ export default function Auth() {
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="password" className="text-farm-800">Password</Label>
+                    <Label htmlFor="password" className="text-farm-800">
+                      Password
+                    </Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-farm-500" />
                       <Input
@@ -151,7 +180,10 @@ export default function Auth() {
                       />
                     </div>
                   </div>
-                  <Button type="submit" className="w-full bg-farm-600 hover:bg-farm-700 text-white">
+                  <Button
+                    type="submit"
+                    className="w-full bg-farm-600 hover:bg-farm-700 text-white"
+                  >
                     Sign In as {currentRole.title}
                   </Button>
                 </form>
@@ -161,7 +193,9 @@ export default function Auth() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="firstName" className="text-farm-800">First Name</Label>
+                      <Label htmlFor="firstName" className="text-farm-800">
+                        First Name
+                      </Label>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-4 w-4 text-farm-500" />
                         <Input
@@ -173,7 +207,9 @@ export default function Auth() {
                       </div>
                     </div>
                     <div>
-                      <Label htmlFor="lastName" className="text-farm-800">Last Name</Label>
+                      <Label htmlFor="lastName" className="text-farm-800">
+                        Last Name
+                      </Label>
                       <Input
                         id="lastName"
                         placeholder="Last name"
@@ -182,9 +218,11 @@ export default function Auth() {
                       />
                     </div>
                   </div>
-                  
+
                   <div>
-                    <Label htmlFor="email" className="text-farm-800">Email</Label>
+                    <Label htmlFor="email" className="text-farm-800">
+                      Email
+                    </Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-farm-500" />
                       <Input
@@ -198,7 +236,9 @@ export default function Auth() {
                   </div>
 
                   <div>
-                    <Label htmlFor="phone" className="text-farm-800">Phone Number</Label>
+                    <Label htmlFor="phone" className="text-farm-800">
+                      Phone Number
+                    </Label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-3 h-4 w-4 text-farm-500" />
                       <Input
@@ -215,13 +255,19 @@ export default function Auth() {
                     <>
                       <div>
                         <Label htmlFor="businessName" className="text-farm-800">
-                          {selectedRole === "vendor" ? "Business Name" : "Company/Farm Name"}
+                          {selectedRole === "vendor"
+                            ? "Business Name"
+                            : "Company/Farm Name"}
                         </Label>
                         <div className="relative">
                           <Building className="absolute left-3 top-3 h-4 w-4 text-farm-500" />
                           <Input
                             id="businessName"
-                            placeholder={selectedRole === "vendor" ? "Your food business name" : "Your farm/company name"}
+                            placeholder={
+                              selectedRole === "vendor"
+                                ? "Your food business name"
+                                : "Your farm/company name"
+                            }
                             className="pl-10 border-farm-200 focus:border-farm-600"
                             required
                           />
@@ -229,7 +275,9 @@ export default function Auth() {
                       </div>
 
                       <div>
-                        <Label htmlFor="location" className="text-farm-800">Location</Label>
+                        <Label htmlFor="location" className="text-farm-800">
+                          Location
+                        </Label>
                         <div className="relative">
                           <MapPin className="absolute left-3 top-3 h-4 w-4 text-farm-500" />
                           <Input
@@ -244,7 +292,9 @@ export default function Auth() {
                   )}
 
                   <div>
-                    <Label htmlFor="password" className="text-farm-800">Password</Label>
+                    <Label htmlFor="password" className="text-farm-800">
+                      Password
+                    </Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-farm-500" />
                       <Input
@@ -258,7 +308,9 @@ export default function Auth() {
                   </div>
 
                   <div>
-                    <Label htmlFor="confirmPassword" className="text-farm-800">Confirm Password</Label>
+                    <Label htmlFor="confirmPassword" className="text-farm-800">
+                      Confirm Password
+                    </Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-farm-500" />
                       <Input
@@ -271,7 +323,10 @@ export default function Auth() {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full bg-farm-600 hover:bg-farm-700 text-white">
+                  <Button
+                    type="submit"
+                    className="w-full bg-farm-600 hover:bg-farm-700 text-white"
+                  >
                     Create {currentRole.title} Account
                   </Button>
                 </form>
@@ -280,11 +335,17 @@ export default function Auth() {
 
             <div className="mt-6 text-center text-sm text-farm-600">
               By continuing, you agree to our{" "}
-              <Link to="/terms" className="text-farm-600 hover:text-farm-800 underline">
+              <Link
+                to="/terms"
+                className="text-farm-600 hover:text-farm-800 underline"
+              >
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link to="/privacy" className="text-farm-600 hover:text-farm-800 underline">
+              <Link
+                to="/privacy"
+                className="text-farm-600 hover:text-farm-800 underline"
+              >
                 Privacy Policy
               </Link>
             </div>

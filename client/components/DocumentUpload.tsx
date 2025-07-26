@@ -1,23 +1,40 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { 
-  FileText, 
-  Upload, 
-  X, 
-  Check, 
+import {
+  FileText,
+  Upload,
+  X,
+  Check,
   AlertTriangle,
   Loader2,
   Eye,
-  Download
+  Download,
 } from "lucide-react";
-import type { DocumentUploadRequest, ApiResponse, UploadedDocument, DocumentType } from "@shared/api";
+import type {
+  DocumentUploadRequest,
+  ApiResponse,
+  UploadedDocument,
+  DocumentType,
+} from "@shared/api";
 
 interface DocumentUploadProps {
   supplierId: string;
@@ -26,50 +43,55 @@ interface DocumentUploadProps {
   className?: string;
 }
 
-const documentTypes: { value: DocumentType; label: string; description: string; acceptedBy: string[] }[] = [
+const documentTypes: {
+  value: DocumentType;
+  label: string;
+  description: string;
+  acceptedBy: string[];
+}[] = [
   {
-    value: 'purchase_bill',
-    label: 'Purchase Bill/Invoice',
-    description: 'Bills from wholesalers, mandis, or suppliers',
-    acceptedBy: ['wholesaler', 'home_producer']
+    value: "purchase_bill",
+    label: "Purchase Bill/Invoice",
+    description: "Bills from wholesalers, mandis, or suppliers",
+    acceptedBy: ["wholesaler", "home_producer"],
   },
   {
-    value: 'mandi_receipt',
-    label: 'Mandi Receipt',
-    description: 'Official receipts from agricultural markets',
-    acceptedBy: ['farmer', 'wholesaler']
+    value: "mandi_receipt",
+    label: "Mandi Receipt",
+    description: "Official receipts from agricultural markets",
+    acceptedBy: ["farmer", "wholesaler"],
   },
   {
-    value: 'harvest_log',
-    label: 'Harvest Log',
-    description: 'Documentation of harvest dates and quantities',
-    acceptedBy: ['farmer']
+    value: "harvest_log",
+    label: "Harvest Log",
+    description: "Documentation of harvest dates and quantities",
+    acceptedBy: ["farmer"],
   },
   {
-    value: 'business_license',
-    label: 'Business License',
-    description: 'Official business registration documents',
-    acceptedBy: ['wholesaler', 'home_producer']
+    value: "business_license",
+    label: "Business License",
+    description: "Official business registration documents",
+    acceptedBy: ["wholesaler", "home_producer"],
   },
   {
-    value: 'identity_proof',
-    label: 'Identity Proof',
-    description: 'Aadhar card, PAN card, or other ID documents',
-    acceptedBy: ['farmer', 'wholesaler', 'home_producer']
+    value: "identity_proof",
+    label: "Identity Proof",
+    description: "Aadhar card, PAN card, or other ID documents",
+    acceptedBy: ["farmer", "wholesaler", "home_producer"],
   },
   {
-    value: 'food_safety_cert',
-    label: 'Food Safety Certificate',
-    description: 'FSSAI license or food safety certification',
-    acceptedBy: ['home_producer', 'wholesaler']
-  }
+    value: "food_safety_cert",
+    label: "Food Safety Certificate",
+    description: "FSSAI license or food safety certification",
+    acceptedBy: ["home_producer", "wholesaler"],
+  },
 ];
 
-export function DocumentUpload({ 
-  supplierId, 
-  onDocumentUploaded, 
+export function DocumentUpload({
+  supplierId,
+  onDocumentUploaded,
   existingDocuments = [],
-  className 
+  className,
 }: DocumentUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [documentType, setDocumentType] = useState<DocumentType | "">("");
@@ -90,7 +112,12 @@ export function DocumentUpload({
     }
 
     // Validate file type
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+    const allowedTypes = [
+      "application/pdf",
+      "image/jpeg",
+      "image/png",
+      "image/jpg",
+    ];
     if (!allowedTypes.includes(file.type)) {
       setError("Only PDF, JPG, and PNG files are allowed");
       return;
@@ -119,16 +146,16 @@ export function DocumentUpload({
         file: base64,
         metadata: {
           originalName: selectedFile.name,
-          description: description.trim() || undefined
-        }
+          description: description.trim() || undefined,
+        },
       };
 
-      const response = await fetch('/api/verification/upload-document', {
-        method: 'POST',
+      const response = await fetch("/api/verification/upload-document", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestData)
+        body: JSON.stringify(requestData),
       });
 
       const data: ApiResponse<UploadedDocument> = await response.json();
@@ -167,19 +194,27 @@ export function DocumentUpload({
 
   const getVerificationStatusColor = (status: string) => {
     switch (status) {
-      case 'verified': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "verified":
+        return "bg-green-100 text-green-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getVerificationIcon = (status: string) => {
     switch (status) {
-      case 'verified': return <Check className="h-4 w-4" />;
-      case 'pending': return <Loader2 className="h-4 w-4 animate-spin" />;
-      case 'rejected': return <X className="h-4 w-4" />;
-      default: return <FileText className="h-4 w-4" />;
+      case "verified":
+        return <Check className="h-4 w-4" />;
+      case "pending":
+        return <Loader2 className="h-4 w-4 animate-spin" />;
+      case "rejected":
+        return <X className="h-4 w-4" />;
+      default:
+        return <FileText className="h-4 w-4" />;
     }
   };
 
@@ -189,7 +224,9 @@ export function DocumentUpload({
         <CardHeader>
           <div className="flex items-center gap-2">
             <Check className="h-5 w-5 text-green-600" />
-            <CardTitle className="text-green-800">Document Uploaded Successfully</CardTitle>
+            <CardTitle className="text-green-800">
+              Document Uploaded Successfully
+            </CardTitle>
           </div>
           <CardDescription>
             Your document has been submitted for verification
@@ -199,13 +236,17 @@ export function DocumentUpload({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="font-medium">{success.fileName}</span>
-              <Badge className={getVerificationStatusColor(success.verificationStatus)}>
+              <Badge
+                className={getVerificationStatusColor(
+                  success.verificationStatus,
+                )}
+              >
                 {success.verificationStatus}
               </Badge>
             </div>
-            <Button 
-              onClick={() => setSuccess(null)} 
-              variant="outline" 
+            <Button
+              onClick={() => setSuccess(null)}
+              variant="outline"
               className="w-full"
             >
               Upload Another Document
@@ -226,7 +267,8 @@ export function DocumentUpload({
             Upload Verification Documents
           </CardTitle>
           <CardDescription>
-            Upload bills, receipts, and certificates to verify the authenticity of your products
+            Upload bills, receipts, and certificates to verify the authenticity
+            of your products
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -240,7 +282,12 @@ export function DocumentUpload({
 
             <div>
               <Label htmlFor="documentType">Document Type</Label>
-              <Select value={documentType} onValueChange={(value) => setDocumentType(value as DocumentType)}>
+              <Select
+                value={documentType}
+                onValueChange={(value) =>
+                  setDocumentType(value as DocumentType)
+                }
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select document type" />
                 </SelectTrigger>
@@ -249,7 +296,9 @@ export function DocumentUpload({
                     <SelectItem key={type.value} value={type.value}>
                       <div>
                         <div className="font-medium">{type.label}</div>
-                        <div className="text-sm text-gray-500">{type.description}</div>
+                        <div className="text-sm text-gray-500">
+                          {type.description}
+                        </div>
                       </div>
                     </SelectItem>
                   ))}
@@ -293,7 +342,7 @@ export function DocumentUpload({
               />
             </div>
 
-            <Button 
+            <Button
               onClick={uploadDocument}
               disabled={!selectedFile || !documentType || uploading}
               className="w-full"
@@ -326,7 +375,10 @@ export function DocumentUpload({
           <CardContent>
             <div className="space-y-3">
               {existingDocuments.map((doc) => (
-                <div key={doc.id} className="flex items-center justify-between p-3 border rounded-lg">
+                <div
+                  key={doc.id}
+                  className="flex items-center justify-between p-3 border rounded-lg"
+                >
                   <div className="flex items-center gap-3">
                     {getVerificationIcon(doc.verificationStatus)}
                     <div>
@@ -337,7 +389,11 @@ export function DocumentUpload({
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge className={getVerificationStatusColor(doc.verificationStatus)}>
+                    <Badge
+                      className={getVerificationStatusColor(
+                        doc.verificationStatus,
+                      )}
+                    >
                       {doc.verificationStatus}
                     </Badge>
                     <Button variant="ghost" size="sm">

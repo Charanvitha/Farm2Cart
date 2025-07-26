@@ -1,14 +1,16 @@
 import { RequestHandler } from "express";
-import { 
-  Supplier, 
-  ApiResponse, 
-  PaginatedResponse, 
+import {
+  Supplier,
+  ApiResponse,
+  PaginatedResponse,
   SupplierSearchParams,
-  SupplierType 
+  SupplierType,
 } from "@shared/api";
 
 // Mock data for suppliers (in production, this would come from a database)
-const mockSuppliers: (Supplier & { user: { businessName: string; location: string } })[] = [
+const mockSuppliers: (Supplier & {
+  user: { businessName: string; location: string };
+})[] = [
   {
     id: "sup1",
     userId: "user1",
@@ -25,11 +27,11 @@ const mockSuppliers: (Supplier & { user: { businessName: string; location: strin
     updatedAt: "2024-01-20T00:00:00Z",
     user: {
       businessName: "Green Valley Farms",
-      location: "Punjab, India"
-    }
+      location: "Punjab, India",
+    },
   },
   {
-    id: "sup2", 
+    id: "sup2",
     userId: "user2",
     supplierType: "wholesaler",
     verificationStatus: "verified",
@@ -44,12 +46,12 @@ const mockSuppliers: (Supplier & { user: { businessName: string; location: strin
     updatedAt: "2024-01-18T00:00:00Z",
     user: {
       businessName: "Spice Masters Ltd",
-      location: "Kerala, India"
-    }
+      location: "Kerala, India",
+    },
   },
   {
     id: "sup3",
-    userId: "user3", 
+    userId: "user3",
     supplierType: "home_producer",
     verificationStatus: "verified",
     trustScore: 4.9,
@@ -63,8 +65,8 @@ const mockSuppliers: (Supplier & { user: { businessName: string; location: strin
     updatedAt: "2024-01-22T00:00:00Z",
     user: {
       businessName: "Amma's Kitchen",
-      location: "Tamil Nadu, India"
-    }
+      location: "Tamil Nadu, India",
+    },
   },
   {
     id: "sup4",
@@ -82,9 +84,9 @@ const mockSuppliers: (Supplier & { user: { businessName: string; location: strin
     updatedAt: "2024-01-25T00:00:00Z",
     user: {
       businessName: "New Farm Co-op",
-      location: "Maharashtra, India"
-    }
-  }
+      location: "Maharashtra, India",
+    },
+  },
 ];
 
 // GET /api/suppliers - Get all suppliers with filtering
@@ -96,28 +98,34 @@ export const getSuppliers: RequestHandler = (req, res) => {
       minTrustScore,
       onlyVerified,
       page = 1,
-      limit = 10
+      limit = 10,
     } = req.query as Partial<SupplierSearchParams>;
 
     let filteredSuppliers = [...mockSuppliers];
 
     // Apply filters
     if (supplierType) {
-      filteredSuppliers = filteredSuppliers.filter(s => s.supplierType === supplierType);
+      filteredSuppliers = filteredSuppliers.filter(
+        (s) => s.supplierType === supplierType,
+      );
     }
 
     if (location) {
-      filteredSuppliers = filteredSuppliers.filter(s => 
-        s.user.location.toLowerCase().includes(location.toString().toLowerCase())
+      filteredSuppliers = filteredSuppliers.filter((s) =>
+        s.user.location
+          .toLowerCase()
+          .includes(location.toString().toLowerCase()),
       );
     }
 
     if (minTrustScore) {
-      filteredSuppliers = filteredSuppliers.filter(s => s.trustScore >= Number(minTrustScore));
+      filteredSuppliers = filteredSuppliers.filter(
+        (s) => s.trustScore >= Number(minTrustScore),
+      );
     }
 
-    if (onlyVerified === 'true') {
-      filteredSuppliers = filteredSuppliers.filter(s => s.isVerified);
+    if (onlyVerified === "true") {
+      filteredSuppliers = filteredSuppliers.filter((s) => s.isVerified);
     }
 
     // Pagination
@@ -127,22 +135,23 @@ export const getSuppliers: RequestHandler = (req, res) => {
     const endIndex = startIndex + limitNum;
     const paginatedSuppliers = filteredSuppliers.slice(startIndex, endIndex);
 
-    const response: ApiResponse<PaginatedResponse<typeof mockSuppliers[0]>> = {
-      success: true,
-      data: {
-        data: paginatedSuppliers,
-        total: filteredSuppliers.length,
-        page: pageNum,
-        limit: limitNum,
-        totalPages: Math.ceil(filteredSuppliers.length / limitNum)
-      }
-    };
+    const response: ApiResponse<PaginatedResponse<(typeof mockSuppliers)[0]>> =
+      {
+        success: true,
+        data: {
+          data: paginatedSuppliers,
+          total: filteredSuppliers.length,
+          page: pageNum,
+          limit: limitNum,
+          totalPages: Math.ceil(filteredSuppliers.length / limitNum),
+        },
+      };
 
     res.json(response);
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Failed to fetch suppliers"
+      error: "Failed to fetch suppliers",
     });
   }
 };
@@ -151,25 +160,25 @@ export const getSuppliers: RequestHandler = (req, res) => {
 export const getSupplierById: RequestHandler = (req, res) => {
   try {
     const { id } = req.params;
-    const supplier = mockSuppliers.find(s => s.id === id);
+    const supplier = mockSuppliers.find((s) => s.id === id);
 
     if (!supplier) {
       return res.status(404).json({
         success: false,
-        error: "Supplier not found"
+        error: "Supplier not found",
       });
     }
 
     const response: ApiResponse<typeof supplier> = {
       success: true,
-      data: supplier
+      data: supplier,
     };
 
     res.json(response);
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Failed to fetch supplier"
+      error: "Failed to fetch supplier",
     });
   }
 };
@@ -177,41 +186,59 @@ export const getSupplierById: RequestHandler = (req, res) => {
 // GET /api/suppliers/types - Get supplier types with counts
 export const getSupplierTypes: RequestHandler = (req, res) => {
   try {
-    const types = mockSuppliers.reduce((acc, supplier) => {
-      const type = supplier.supplierType;
-      if (!acc[type]) {
-        acc[type] = {
-          type,
-          count: 0,
-          verified: 0,
-          averageTrustScore: 0
-        };
-      }
-      acc[type].count++;
-      if (supplier.isVerified) {
-        acc[type].verified++;
-      }
-      return acc;
-    }, {} as Record<SupplierType, { type: SupplierType; count: number; verified: number; averageTrustScore: number }>);
+    const types = mockSuppliers.reduce(
+      (acc, supplier) => {
+        const type = supplier.supplierType;
+        if (!acc[type]) {
+          acc[type] = {
+            type,
+            count: 0,
+            verified: 0,
+            averageTrustScore: 0,
+          };
+        }
+        acc[type].count++;
+        if (supplier.isVerified) {
+          acc[type].verified++;
+        }
+        return acc;
+      },
+      {} as Record<
+        SupplierType,
+        {
+          type: SupplierType;
+          count: number;
+          verified: number;
+          averageTrustScore: number;
+        }
+      >,
+    );
 
     // Calculate average trust scores
-    Object.keys(types).forEach(type => {
-      const suppliersOfType = mockSuppliers.filter(s => s.supplierType === type as SupplierType);
-      const totalTrustScore = suppliersOfType.reduce((sum, s) => sum + s.trustScore, 0);
-      types[type as SupplierType].averageTrustScore = 
-        suppliersOfType.length > 0 ? totalTrustScore / suppliersOfType.length : 0;
+    Object.keys(types).forEach((type) => {
+      const suppliersOfType = mockSuppliers.filter(
+        (s) => s.supplierType === (type as SupplierType),
+      );
+      const totalTrustScore = suppliersOfType.reduce(
+        (sum, s) => sum + s.trustScore,
+        0,
+      );
+      types[type as SupplierType].averageTrustScore =
+        suppliersOfType.length > 0
+          ? totalTrustScore / suppliersOfType.length
+          : 0;
     });
 
     const response: ApiResponse<typeof types> = {
       success: true,
-      data: types
+      data: types,
     };
 
     res.json(response);
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Failed to fetch supplier types"
+      error: "Failed to fetch supplier types",
     });
   }
 };

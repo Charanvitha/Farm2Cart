@@ -1,9 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { VerificationBadge, TrustScore } from "@/components/ui/verification-badge";
+import {
+  VerificationBadge,
+  TrustScore,
+} from "@/components/ui/verification-badge";
 import {
   Truck,
   Leaf,
@@ -19,9 +28,13 @@ import {
   Zap,
   Package,
   FileText,
-  Camera
+  Camera,
 } from "lucide-react";
-import type { ApiResponse, PaginatedResponse, ProductWithSupplier } from "@shared/api";
+import type {
+  ApiResponse,
+  PaginatedResponse,
+  ProductWithSupplier,
+} from "@shared/api";
 
 // Featured Supplier Card Component
 function FeaturedSupplierCard({
@@ -31,7 +44,7 @@ function FeaturedSupplierCard({
   trustScore,
   totalOrders,
   badges,
-  specialties
+  specialties,
 }: {
   name: string;
   location: string;
@@ -58,7 +71,9 @@ function FeaturedSupplierCard({
             <VerificationBadge type={type} size="sm" />
             {badges.map((badge, index) => {
               if (badge.toLowerCase().includes("organic")) {
-                return <VerificationBadge key={index} type="organic" size="sm" />;
+                return (
+                  <VerificationBadge key={index} type="organic" size="sm" />
+                );
               }
               return <VerificationBadge key={index} type="quality" size="sm" />;
             })}
@@ -69,8 +84,12 @@ function FeaturedSupplierCard({
         <CardContent>
           <p className="text-sm text-farm-600 mb-4">{specialties}</p>
           <div className="text-center">
-            <div className="text-2xl font-bold text-farm-600">{totalOrders}</div>
-            <div className="text-xs text-muted-foreground">Successful Orders</div>
+            <div className="text-2xl font-bold text-farm-600">
+              {totalOrders}
+            </div>
+            <div className="text-xs text-muted-foreground">
+              Successful Orders
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -87,7 +106,7 @@ function FeaturedProductCard({
   supplierType,
   trustScore,
   image,
-  category
+  category,
 }: {
   name: string;
   price: number;
@@ -102,7 +121,7 @@ function FeaturedProductCard({
     const colors: Record<string, string> = {
       vegetables: "bg-green-100 text-green-800",
       oils: "bg-yellow-100 text-yellow-800",
-      spices: "bg-red-100 text-red-800"
+      spices: "bg-red-100 text-red-800",
     };
     return colors[category] || "bg-gray-100 text-gray-800";
   };
@@ -115,16 +134,20 @@ function FeaturedProductCard({
           alt={name}
           className="w-full h-40 object-cover rounded-t-lg"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = '/placeholder.svg';
+            (e.target as HTMLImageElement).src = "/placeholder.svg";
           }}
         />
-        <Badge className={`absolute top-2 left-2 ${getCategoryColor(category)}`}>
+        <Badge
+          className={`absolute top-2 left-2 ${getCategoryColor(category)}`}
+        >
           {category}
         </Badge>
       </div>
       <CardHeader className="pb-2">
         <CardTitle className="text-base text-farm-900">{name}</CardTitle>
-        <div className="text-lg font-bold text-farm-600">₹{price}/{unit}</div>
+        <div className="text-lg font-bold text-farm-600">
+          ₹{price}/{unit}
+        </div>
       </CardHeader>
       <CardContent>
         <div className="mb-3">
@@ -156,12 +179,14 @@ const getSupplierSpecialties = (type: string) => {
 
 export default function Index() {
   const [featuredSuppliers, setFeaturedSuppliers] = useState<any[]>([]);
-  const [featuredProducts, setFeaturedProducts] = useState<ProductWithSupplier[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<
+    ProductWithSupplier[]
+  >([]);
   const [stats, setStats] = useState({
     totalVendors: 1000,
     totalSuppliers: 500,
     totalProducts: 50,
-    customerSatisfaction: 98
+    customerSatisfaction: 98,
   });
   const [loading, setLoading] = useState(true);
 
@@ -175,46 +200,54 @@ export default function Index() {
 
       // Try to fetch data, but gracefully handle failures
       let suppliersData: ApiResponse<PaginatedResponse<any>> | null = null;
-      let productsData: ApiResponse<PaginatedResponse<ProductWithSupplier>> | null = null;
+      let productsData: ApiResponse<
+        PaginatedResponse<ProductWithSupplier>
+      > | null = null;
       let statsData: ApiResponse<any> | null = null;
 
       // Fetch suppliers with error handling and retry
       try {
-        const suppliersResponse = await fetch('/api/suppliers?onlyVerified=true&limit=3', {
-          headers: { 'Content-Type': 'application/json' },
-          signal: AbortSignal.timeout(10000) // 10 second timeout
-        });
+        const suppliersResponse = await fetch(
+          "/api/suppliers?onlyVerified=true&limit=3",
+          {
+            headers: { "Content-Type": "application/json" },
+            signal: AbortSignal.timeout(10000), // 10 second timeout
+          },
+        );
         if (suppliersResponse.ok) {
           suppliersData = await suppliersResponse.json();
         }
       } catch (error) {
-        console.warn('Failed to fetch suppliers:', error);
+        console.warn("Failed to fetch suppliers:", error);
       }
 
       // Fetch products with error handling and retry
       try {
-        const productsResponse = await fetch('/api/products?onlyVerified=true&limit=4', {
-          headers: { 'Content-Type': 'application/json' },
-          signal: AbortSignal.timeout(10000) // 10 second timeout
-        });
+        const productsResponse = await fetch(
+          "/api/products?onlyVerified=true&limit=4",
+          {
+            headers: { "Content-Type": "application/json" },
+            signal: AbortSignal.timeout(10000), // 10 second timeout
+          },
+        );
         if (productsResponse.ok) {
           productsData = await productsResponse.json();
         }
       } catch (error) {
-        console.warn('Failed to fetch products:', error);
+        console.warn("Failed to fetch products:", error);
       }
 
       // Fetch stats with error handling and retry
       try {
-        const statsResponse = await fetch('/api/admin/stats', {
-          headers: { 'Content-Type': 'application/json' },
-          signal: AbortSignal.timeout(10000) // 10 second timeout
+        const statsResponse = await fetch("/api/admin/stats", {
+          headers: { "Content-Type": "application/json" },
+          signal: AbortSignal.timeout(10000), // 10 second timeout
         });
         if (statsResponse.ok) {
           statsData = await statsResponse.json();
         }
       } catch (error) {
-        console.warn('Failed to fetch stats:', error);
+        console.warn("Failed to fetch stats:", error);
       }
 
       // Update state with successful responses
@@ -231,21 +264,21 @@ export default function Index() {
           totalVendors: statsData.data.totalVendors,
           totalSuppliers: statsData.data.totalSuppliers,
           totalProducts: statsData.data.totalProducts,
-          customerSatisfaction: 98 // Mock satisfaction percentage
+          customerSatisfaction: 98, // Mock satisfaction percentage
         });
       }
     } catch (error) {
-      console.error('Failed to fetch featured data:', error);
+      console.error("Failed to fetch featured data:", error);
 
       // Retry once if this is the first failure
       if (retryCount === 0) {
-        console.log('Retrying API calls...');
+        console.log("Retrying API calls...");
         setTimeout(() => fetchFeaturedData(1), 2000); // Retry after 2 seconds
         return;
       }
 
       // If retry also fails, component will use fallback mock data
-      console.warn('Using fallback data after retry failed');
+      console.warn("Using fallback data after retry failed");
     } finally {
       setLoading(false);
     }
@@ -255,23 +288,27 @@ export default function Index() {
     {
       icon: <Truck className="h-8 w-8 text-farm-600" />,
       title: "Direct Sourcing",
-      description: "Connect directly with farmers, wholesalers, and home producers. Cut out middlemen and get better prices."
+      description:
+        "Connect directly with farmers, wholesalers, and home producers. Cut out middlemen and get better prices.",
     },
     {
       icon: <Shield className="h-8 w-8 text-farm-600" />,
       title: "Verified Suppliers",
-      description: "All suppliers are verified with receipts, photos, and trust scores. Shop with confidence."
+      description:
+        "All suppliers are verified with receipts, photos, and trust scores. Shop with confidence.",
     },
     {
       icon: <Clock className="h-8 w-8 text-farm-600" />,
       title: "Real-time Inventory",
-      description: "See live product availability and place orders instantly. Never run out of ingredients again."
+      description:
+        "See live product availability and place orders instantly. Never run out of ingredients again.",
     },
     {
       icon: <Star className="h-8 w-8 text-farm-600" />,
       title: "Quality Assured",
-      description: "Rate and review suppliers. Trust badges ensure you're getting the best quality ingredients."
-    }
+      description:
+        "Rate and review suppliers. Trust badges ensure you're getting the best quality ingredients.",
+    },
   ];
 
   const supplierTypes = [
@@ -279,27 +316,30 @@ export default function Index() {
       icon: <Leaf className="h-6 w-6" />,
       title: "Local Farmers",
       description: "Fresh vegetables, fruits, and grains",
-      badge: "Farm Fresh"
+      badge: "Farm Fresh",
     },
     {
       icon: <Truck className="h-6 w-6" />,
-      title: "Wholesalers", 
+      title: "Wholesalers",
       description: "Bulk oils, spices, and packaging",
-      badge: "Bulk Deals"
+      badge: "Bulk Deals",
     },
     {
       icon: <Heart className="h-6 w-6" />,
       title: "Home Producers",
       description: "Homemade masalas, pickles, and dairy",
-      badge: "Artisan Made"
-    }
+      badge: "Artisan Made",
+    },
   ];
 
   const statsDisplay = [
     { number: `${stats.totalSuppliers}+`, label: "Verified Suppliers" },
     { number: `${stats.totalVendors}+`, label: "Street Food Vendors" },
     { number: `${stats.totalProducts}+`, label: "Product Categories" },
-    { number: `${stats.customerSatisfaction}%`, label: "Customer Satisfaction" }
+    {
+      number: `${stats.customerSatisfaction}%`,
+      label: "Customer Satisfaction",
+    },
   ];
 
   return (
@@ -314,21 +354,43 @@ export default function Index() {
             <span className="text-2xl font-bold text-farm-800">Farm2Cart</span>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
-            <Link to="/suppliers" className="text-farm-700 hover:text-farm-800 transition-colors font-medium">
+            <Link
+              to="/suppliers"
+              className="text-farm-700 hover:text-farm-800 transition-colors font-medium"
+            >
               Browse Suppliers
             </Link>
-            <Link to="/products" className="text-farm-700 hover:text-farm-800 transition-colors font-medium">
+            <Link
+              to="/products"
+              className="text-farm-700 hover:text-farm-800 transition-colors font-medium"
+            >
               Browse Products
             </Link>
-            <Link to="/verification" className="text-farm-700 hover:text-farm-800 transition-colors font-medium">
+            <Link
+              to="/verification"
+              className="text-farm-700 hover:text-farm-800 transition-colors font-medium"
+            >
               🔍 Verification
             </Link>
-            <a href="#how-it-works" className="text-farm-700 hover:text-farm-800 transition-colors">How it Works</a>
-            <a href="#benefits" className="text-farm-700 hover:text-farm-800 transition-colors">Benefits</a>
+            <a
+              href="#how-it-works"
+              className="text-farm-700 hover:text-farm-800 transition-colors"
+            >
+              How it Works
+            </a>
+            <a
+              href="#benefits"
+              className="text-farm-700 hover:text-farm-800 transition-colors"
+            >
+              Benefits
+            </a>
           </nav>
           <div className="flex items-center space-x-3">
             <Link to="/login">
-              <Button variant="ghost" className="text-farm-700 hover:text-farm-800 hover:bg-farm-100">
+              <Button
+                variant="ghost"
+                className="text-farm-700 hover:text-farm-800 hover:bg-farm-100"
+              >
                 Login
               </Button>
             </Link>
@@ -353,22 +415,33 @@ export default function Index() {
             <span className="text-farm-600">Directly from Farmers</span>
           </h1>
           <p className="text-xl text-farm-700 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Connect with verified local farmers, wholesalers, and home producers.
-            Get the freshest vegetables, oils, masalas, and packaging materials
-            for your street food business at the best prices.
-            <br /><br />
-            <strong className="text-farm-600">🔍 100% Authentic Raw Materials</strong> -
-            Our advanced verification system prevents D-Mart bills and ensures genuine sourcing!
+            Connect with verified local farmers, wholesalers, and home
+            producers. Get the freshest vegetables, oils, masalas, and packaging
+            materials for your street food business at the best prices.
+            <br />
+            <br />
+            <strong className="text-farm-600">
+              🔍 100% Authentic Raw Materials
+            </strong>{" "}
+            - Our advanced verification system prevents D-Mart bills and ensures
+            genuine sourcing!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/register?role=vendor">
-              <Button size="lg" className="bg-farm-600 hover:bg-farm-700 text-white px-8 py-4 text-lg">
+              <Button
+                size="lg"
+                className="bg-farm-600 hover:bg-farm-700 text-white px-8 py-4 text-lg"
+              >
                 <Users className="mr-2 h-5 w-5" />
                 Join as Vendor
               </Button>
             </Link>
             <Link to="/register?role=supplier">
-              <Button size="lg" variant="outline" className="border-farm-600 text-farm-600 hover:bg-farm-50 px-8 py-4 text-lg">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-farm-600 text-farm-600 hover:bg-farm-50 px-8 py-4 text-lg"
+              >
                 <Leaf className="mr-2 h-5 w-5" />
                 Become a Supplier
               </Button>
@@ -383,7 +456,9 @@ export default function Index() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {statsDisplay.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-4xl font-bold text-farm-600 mb-2">{stat.number}</div>
+                <div className="text-4xl font-bold text-farm-600 mb-2">
+                  {stat.number}
+                </div>
                 <div className="text-farm-700">{stat.label}</div>
               </div>
             ))}
@@ -399,20 +474,29 @@ export default function Index() {
               Three Types of Trusted Suppliers
             </h2>
             <p className="text-xl text-farm-700 max-w-2xl mx-auto">
-              Choose from our network of verified suppliers, each specializing in different product categories
+              Choose from our network of verified suppliers, each specializing
+              in different product categories
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {supplierTypes.map((supplier, index) => (
-              <Card key={index} className="border-farm-200 hover:shadow-lg transition-shadow">
+              <Card
+                key={index}
+                className="border-farm-200 hover:shadow-lg transition-shadow"
+              >
                 <CardHeader className="text-center">
                   <div className="mx-auto bg-farm-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                     {supplier.icon}
                   </div>
-                  <Badge variant="secondary" className="mb-2 bg-fresh-100 text-fresh-800">
+                  <Badge
+                    variant="secondary"
+                    className="mb-2 bg-fresh-100 text-fresh-800"
+                  >
                     {supplier.badge}
                   </Badge>
-                  <CardTitle className="text-farm-800">{supplier.title}</CardTitle>
+                  <CardTitle className="text-farm-800">
+                    {supplier.title}
+                  </CardTitle>
                   <CardDescription className="text-farm-600">
                     {supplier.description}
                   </CardDescription>
@@ -431,17 +515,23 @@ export default function Index() {
               Why Choose Farm2Cart?
             </h2>
             <p className="text-xl text-farm-700 max-w-2xl mx-auto">
-              We're revolutionizing how street food vendors source their ingredients
+              We're revolutionizing how street food vendors source their
+              ingredients
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit, index) => (
-              <Card key={index} className="border-farm-200 bg-white hover:shadow-lg transition-shadow">
+              <Card
+                key={index}
+                className="border-farm-200 bg-white hover:shadow-lg transition-shadow"
+              >
                 <CardHeader className="text-center">
                   <div className="mx-auto bg-farm-100 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
                     {benefit.icon}
                   </div>
-                  <CardTitle className="text-farm-800 text-lg">{benefit.title}</CardTitle>
+                  <CardTitle className="text-farm-800 text-lg">
+                    {benefit.title}
+                  </CardTitle>
                   <CardDescription className="text-farm-600">
                     {benefit.description}
                   </CardDescription>
@@ -460,7 +550,8 @@ export default function Index() {
               🔍 Ensuring Raw Material Authenticity
             </h2>
             <p className="text-xl text-farm-700 max-w-2xl mx-auto">
-              Advanced verification system to prevent D-Mart bills and fake inventory
+              Advanced verification system to prevent D-Mart bills and fake
+              inventory
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -469,10 +560,16 @@ export default function Index() {
                 <div className="mx-auto bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                   <FileText className="h-8 w-8 text-blue-600" />
                 </div>
-                <CardTitle className="text-farm-800">📋 Bill Verification</CardTitle>
+                <CardTitle className="text-farm-800">
+                  📋 Bill Verification
+                </CardTitle>
                 <CardDescription className="text-farm-600">
-                  Upload mandi receipts, harvest logs, and original purchase bills.
-                  <strong className="text-red-600"> No D-Mart bills allowed!</strong>
+                  Upload mandi receipts, harvest logs, and original purchase
+                  bills.
+                  <strong className="text-red-600">
+                    {" "}
+                    No D-Mart bills allowed!
+                  </strong>
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -482,9 +579,12 @@ export default function Index() {
                 <div className="mx-auto bg-green-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                   <Camera className="h-8 w-8 text-green-600" />
                 </div>
-                <CardTitle className="text-farm-800">📸 Live Photo Capture</CardTitle>
+                <CardTitle className="text-farm-800">
+                  📸 Live Photo Capture
+                </CardTitle>
                 <CardDescription className="text-farm-600">
-                  Real-time inventory photos with GPS tagging and timestamp watermarks.
+                  Real-time inventory photos with GPS tagging and timestamp
+                  watermarks.
                   <strong>No Google downloads!</strong>
                 </CardDescription>
               </CardHeader>
@@ -505,7 +605,10 @@ export default function Index() {
           </div>
           <div className="text-center mt-12">
             <Link to="/verification">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4">
+              <Button
+                size="lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4"
+              >
                 🔍 Access Verification System
               </Button>
             </Link>
@@ -529,22 +632,34 @@ export default function Index() {
               <div className="bg-farm-600 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 1
               </div>
-              <h3 className="text-xl font-semibold text-farm-800 mb-2">Sign Up</h3>
-              <p className="text-farm-600">Register as a vendor or supplier with your business details</p>
+              <h3 className="text-xl font-semibold text-farm-800 mb-2">
+                Sign Up
+              </h3>
+              <p className="text-farm-600">
+                Register as a vendor or supplier with your business details
+              </p>
             </div>
             <div className="text-center">
               <div className="bg-farm-600 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 2
               </div>
-              <h3 className="text-xl font-semibold text-farm-800 mb-2">Browse & Connect</h3>
-              <p className="text-farm-600">Explore verified suppliers and their real-time inventory</p>
+              <h3 className="text-xl font-semibold text-farm-800 mb-2">
+                Browse & Connect
+              </h3>
+              <p className="text-farm-600">
+                Explore verified suppliers and their real-time inventory
+              </p>
             </div>
             <div className="text-center">
               <div className="bg-farm-600 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
                 3
               </div>
-              <h3 className="text-xl font-semibold text-farm-800 mb-2">Order & Grow</h3>
-              <p className="text-farm-600">Place orders, track delivery, and grow your business</p>
+              <h3 className="text-xl font-semibold text-farm-800 mb-2">
+                Order & Grow
+              </h3>
+              <p className="text-farm-600">
+                Place orders, track delivery, and grow your business
+              </p>
             </div>
           </div>
         </div>
@@ -558,7 +673,8 @@ export default function Index() {
               Trusted Verified Suppliers
             </h2>
             <p className="text-xl text-farm-700 max-w-2xl mx-auto">
-              Meet some of our top-rated suppliers who are ready to serve your business
+              Meet some of our top-rated suppliers who are ready to serve your
+              business
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -632,7 +748,10 @@ export default function Index() {
           </div>
           <div className="text-center mt-12">
             <Link to="/suppliers">
-              <Button size="lg" className="bg-farm-600 hover:bg-farm-700 text-white px-8 py-4">
+              <Button
+                size="lg"
+                className="bg-farm-600 hover:bg-farm-700 text-white px-8 py-4"
+              >
                 Browse All Suppliers
               </Button>
             </Link>
@@ -681,7 +800,7 @@ export default function Index() {
                   supplier={product.supplier.user.businessName}
                   supplierType={product.supplier.supplierType}
                   trustScore={product.supplier.trustScore}
-                  image={product.images[0] || '/placeholder.svg'}
+                  image={product.images[0] || "/placeholder.svg"}
                   category={product.category}
                 />
               ))
@@ -733,7 +852,10 @@ export default function Index() {
           </div>
           <div className="text-center mt-12">
             <Link to="/products">
-              <Button size="lg" className="bg-farm-600 hover:bg-farm-700 text-white px-8 py-4">
+              <Button
+                size="lg"
+                className="bg-farm-600 hover:bg-farm-700 text-white px-8 py-4"
+              >
                 View All Products
               </Button>
             </Link>
@@ -748,17 +870,26 @@ export default function Index() {
             Ready to Transform Your Supply Chain?
           </h2>
           <p className="text-xl text-farm-100 mb-10 max-w-2xl mx-auto">
-            Join thousands of vendors and suppliers who are already benefiting from direct sourcing
+            Join thousands of vendors and suppliers who are already benefiting
+            from direct sourcing
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/register?role=vendor">
-              <Button size="lg" variant="secondary" className="bg-white text-farm-600 hover:bg-farm-50 px-8 py-4 text-lg">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="bg-white text-farm-600 hover:bg-farm-50 px-8 py-4 text-lg"
+              >
                 <Zap className="mr-2 h-5 w-5" />
                 Start Sourcing Today
               </Button>
             </Link>
             <Link to="/register?role=supplier">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-farm-700 px-8 py-4 text-lg">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-white text-white hover:bg-farm-700 px-8 py-4 text-lg"
+              >
                 <TrendingUp className="mr-2 h-5 w-5" />
                 Sell Your Products
               </Button>
@@ -779,36 +910,103 @@ export default function Index() {
                 <span className="text-xl font-bold">Farm2Cart</span>
               </div>
               <p className="text-farm-300">
-                Connecting street food vendors with local farmers and suppliers for a better future.
+                Connecting street food vendors with local farmers and suppliers
+                for a better future.
               </p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">For Vendors</h4>
               <ul className="space-y-2 text-farm-300">
-                <li><Link to="/suppliers" className="hover:text-white transition-colors">Browse Suppliers</Link></li>
-                <li><Link to="/vendor/orders" className="hover:text-white transition-colors">Track Orders</Link></li>
-                <li><Link to="/vendor/help" className="hover:text-white transition-colors">Help Center</Link></li>
+                <li>
+                  <Link
+                    to="/suppliers"
+                    className="hover:text-white transition-colors"
+                  >
+                    Browse Suppliers
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/vendor/orders"
+                    className="hover:text-white transition-colors"
+                  >
+                    Track Orders
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/vendor/help"
+                    className="hover:text-white transition-colors"
+                  >
+                    Help Center
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">For Suppliers</h4>
               <ul className="space-y-2 text-farm-300">
-                <li><Link to="/suppliers" className="hover:text-white transition-colors">List Products</Link></li>
-                <li><Link to="/verification" className="hover:text-white transition-colors">🔍 Get Verified</Link></li>
-                <li><Link to="/suppliers/analytics" className="hover:text-white transition-colors">Analytics</Link></li>
+                <li>
+                  <Link
+                    to="/suppliers"
+                    className="hover:text-white transition-colors"
+                  >
+                    List Products
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/verification"
+                    className="hover:text-white transition-colors"
+                  >
+                    🔍 Get Verified
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/suppliers/analytics"
+                    className="hover:text-white transition-colors"
+                  >
+                    Analytics
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-farm-300">
-                <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li>
+                  <Link
+                    to="/about"
+                    className="hover:text-white transition-colors"
+                  >
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/contact"
+                    className="hover:text-white transition-colors"
+                  >
+                    Contact
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/privacy"
+                    className="hover:text-white transition-colors"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
           <div className="border-t border-farm-800 mt-8 pt-8 text-center text-farm-400">
-            <p>&copy; 2024 Farm2Cart. All rights reserved. Empowering street food vendors across India.</p>
+            <p>
+              &copy; 2024 Farm2Cart. All rights reserved. Empowering street food
+              vendors across India.
+            </p>
           </div>
         </div>
       </footer>

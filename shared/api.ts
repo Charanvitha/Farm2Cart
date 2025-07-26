@@ -10,7 +10,7 @@ export interface User {
   firstName: string;
   lastName: string;
   phone: string;
-  role: 'vendor' | 'supplier' | 'admin';
+  role: "vendor" | "supplier" | "admin";
   businessName?: string;
   location?: string;
   createdAt: string;
@@ -37,13 +37,13 @@ export interface AuthResponse {
 }
 
 // Supplier Types
-export type SupplierType = 'farmer' | 'wholesaler' | 'home_producer';
+export type SupplierType = "farmer" | "wholesaler" | "home_producer";
 
 export interface Supplier {
   id: string;
   userId: string;
   supplierType: SupplierType;
-  verificationStatus: 'pending' | 'verified' | 'rejected';
+  verificationStatus: "pending" | "verified" | "rejected";
   trustScore: number;
   totalOrders: number;
   positiveRatings: number;
@@ -56,7 +56,15 @@ export interface Supplier {
 }
 
 // Product Types
-export type ProductCategory = 'vegetables' | 'fruits' | 'oils' | 'spices' | 'dairy' | 'packaging' | 'grains' | 'other';
+export type ProductCategory =
+  | "vegetables"
+  | "fruits"
+  | "oils"
+  | "spices"
+  | "dairy"
+  | "packaging"
+  | "grains"
+  | "other";
 
 export interface Product {
   id: string;
@@ -74,7 +82,7 @@ export interface Product {
 }
 
 export interface ProductWithSupplier extends Product {
-  supplier: Supplier & { user: Pick<User, 'businessName' | 'location'> };
+  supplier: Supplier & { user: Pick<User, "businessName" | "location"> };
 }
 
 // Orders
@@ -90,16 +98,16 @@ export interface Order {
   supplierId: string;
   items: OrderItem[];
   totalAmount: number;
-  status: 'pending' | 'confirmed' | 'delivered' | 'cancelled';
+  status: "pending" | "confirmed" | "delivered" | "cancelled";
   deliveryDate?: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface OrderWithDetails extends Order {
-  vendor: Pick<User, 'firstName' | 'lastName' | 'businessName' | 'phone'>;
-  supplier: Pick<User, 'firstName' | 'lastName' | 'businessName' | 'phone'>;
-  items: (OrderItem & { product: Pick<Product, 'name' | 'unit'> })[];
+  vendor: Pick<User, "firstName" | "lastName" | "businessName" | "phone">;
+  supplier: Pick<User, "firstName" | "lastName" | "businessName" | "phone">;
+  items: (OrderItem & { product: Pick<Product, "name" | "unit"> })[];
 }
 
 // Ratings and Reviews
@@ -146,11 +154,11 @@ export interface UpdateProductRequest extends Partial<CreateProductRequest> {
 
 export interface CreateOrderRequest {
   supplierId: string;
-  items: Omit<OrderItem, 'pricePerUnit'>[];
+  items: Omit<OrderItem, "pricePerUnit">[];
 }
 
 export interface UpdateOrderStatusRequest {
-  status: Order['status'];
+  status: Order["status"];
   deliveryDate?: string;
 }
 
@@ -183,7 +191,13 @@ export interface SupplierSearchParams {
 }
 
 // Document Verification Types
-export type DocumentType = 'purchase_bill' | 'mandi_receipt' | 'harvest_log' | 'business_license' | 'identity_proof' | 'food_safety_cert';
+export type DocumentType =
+  | "purchase_bill"
+  | "mandi_receipt"
+  | "harvest_log"
+  | "business_license"
+  | "identity_proof"
+  | "food_safety_cert";
 
 export interface UploadedDocument {
   id: string;
@@ -191,7 +205,7 @@ export interface UploadedDocument {
   fileName: string;
   fileUrl: string;
   uploadedAt: string;
-  verificationStatus: 'pending' | 'verified' | 'rejected';
+  verificationStatus: "pending" | "verified" | "rejected";
   rejectionReason?: string;
   metadata?: {
     fileSize: number;
@@ -217,7 +231,7 @@ export interface LiveInventoryPhoto {
     timestamp: string;
     timezone: string;
   };
-  verificationStatus: 'pending' | 'verified' | 'flagged' | 'rejected';
+  verificationStatus: "pending" | "verified" | "flagged" | "rejected";
   aiAnalysis?: {
     isRealTime: boolean;
     duplicateScore: number;
@@ -270,7 +284,7 @@ export interface LivePhotoRequest {
 
 export interface ImageVerificationRequest {
   imageUrl: string;
-  type: 'product' | 'document' | 'live_inventory';
+  type: "product" | "document" | "live_inventory";
   supplierId: string;
   productId?: string;
 }
@@ -278,20 +292,20 @@ export interface ImageVerificationRequest {
 // Admin interfaces
 export interface VerifySupplierRequest {
   supplierId: string;
-  status: 'verified' | 'rejected';
+  status: "verified" | "rejected";
   badges?: string[];
   reason?: string;
 }
 
 export interface VerifyDocumentRequest {
   documentId: string;
-  status: 'verified' | 'rejected';
+  status: "verified" | "rejected";
   reason?: string;
 }
 
 export interface VerifyLivePhotoRequest {
   photoId: string;
-  status: 'verified' | 'flagged' | 'rejected';
+  status: "verified" | "flagged" | "rejected";
   reason?: string;
 }
 

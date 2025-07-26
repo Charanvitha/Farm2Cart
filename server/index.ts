@@ -7,7 +7,7 @@ import { handleDemo } from "./routes/demo";
 import {
   getSuppliers,
   getSupplierById,
-  getSupplierTypes
+  getSupplierTypes,
 } from "./routes/suppliers";
 
 import {
@@ -15,7 +15,7 @@ import {
   getProductById,
   getProductCategories,
   createProduct,
-  updateProduct
+  updateProduct,
 } from "./routes/products";
 
 import {
@@ -23,7 +23,7 @@ import {
   getOrderById,
   createOrder,
   updateOrderStatus,
-  getOrderStats
+  getOrderStats,
 } from "./routes/orders";
 
 import {
@@ -32,7 +32,7 @@ import {
   verifySupplier,
   getFlaggedContent,
   resolveFlag,
-  getTrustScoreAnalytics
+  getTrustScoreAnalytics,
 } from "./routes/admin";
 
 import {
@@ -43,7 +43,7 @@ import {
   getSupplierLivePhotos,
   getPendingReviews,
   verifyDocument,
-  verifyLivePhoto
+  verifyLivePhoto,
 } from "./routes/verification";
 
 export function createServer() {

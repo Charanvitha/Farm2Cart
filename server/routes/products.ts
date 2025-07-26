@@ -1,13 +1,13 @@
 import { RequestHandler } from "express";
-import { 
-  Product, 
+import {
+  Product,
   ProductWithSupplier,
-  ApiResponse, 
-  PaginatedResponse, 
+  ApiResponse,
+  PaginatedResponse,
   ProductSearchParams,
   CreateProductRequest,
   UpdateProductRequest,
-  ProductCategory 
+  ProductCategory,
 } from "@shared/api";
 
 // Mock data for products (in production, this would come from a database)
@@ -16,7 +16,8 @@ const mockProducts: ProductWithSupplier[] = [
     id: "prod1",
     supplierId: "sup1",
     name: "Fresh Tomatoes",
-    description: "Organic farm-fresh tomatoes, perfect for street food preparations",
+    description:
+      "Organic farm-fresh tomatoes, perfect for street food preparations",
     category: "vegetables",
     price: 45,
     unit: "kg",
@@ -24,7 +25,7 @@ const mockProducts: ProductWithSupplier[] = [
     images: [
       "https://cdn.builder.io/api/v1/image/assets%2F9b8a3fe08bb1420195d645ec6bc47e63%2F48bb0684298f460da28786599c26c601?format=webp",
       "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?w=400&h=300&fit=crop"
+      "https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?w=400&h=300&fit=crop",
     ],
     isAvailable: true,
     lastUpdated: "2024-01-20T10:30:00Z",
@@ -45,22 +46,23 @@ const mockProducts: ProductWithSupplier[] = [
       updatedAt: "2024-01-20T00:00:00Z",
       user: {
         businessName: "Green Valley Farms",
-        location: "Punjab, India"
-      }
-    }
+        location: "Punjab, India",
+      },
+    },
   },
   {
     id: "prod2",
     supplierId: "sup2",
     name: "Premium Cooking Oil",
-    description: "High-quality refined sunflower oil, ideal for frying and cooking",
+    description:
+      "High-quality refined sunflower oil, ideal for frying and cooking",
     category: "oils",
     price: 150,
     unit: "liter",
     quantity: 200,
     images: [
       "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1628744448840-55bdb2497bd4?w=400&h=300&fit=crop"
+      "https://images.unsplash.com/photo-1628744448840-55bdb2497bd4?w=400&h=300&fit=crop",
     ],
     isAvailable: true,
     lastUpdated: "2024-01-18T15:45:00Z",
@@ -81,15 +83,16 @@ const mockProducts: ProductWithSupplier[] = [
       updatedAt: "2024-01-18T00:00:00Z",
       user: {
         businessName: "Spice Masters Ltd",
-        location: "Kerala, India"
-      }
-    }
+        location: "Kerala, India",
+      },
+    },
   },
   {
     id: "prod3",
     supplierId: "sup3",
     name: "Homemade Garam Masala",
-    description: "Traditional blend of spices made with family recipes, aromatic and flavorful",
+    description:
+      "Traditional blend of spices made with family recipes, aromatic and flavorful",
     category: "spices",
     price: 280,
     unit: "kg",
@@ -97,7 +100,7 @@ const mockProducts: ProductWithSupplier[] = [
     images: [
       "https://cdn.builder.io/api/v1/image/assets%2F9b8a3fe08bb1420195d645ec6bc47e63%2Fa438956c61f949b1bac7c4d352702776",
       "https://images.unsplash.com/photo-1626428913595-5b77d16c9c64?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1615485925315-4ba30541d21b?w=400&h=300&fit=crop"
+      "https://images.unsplash.com/photo-1615485925315-4ba30541d21b?w=400&h=300&fit=crop",
     ],
     isAvailable: true,
     lastUpdated: "2024-01-22T09:15:00Z",
@@ -118,9 +121,9 @@ const mockProducts: ProductWithSupplier[] = [
       updatedAt: "2024-01-22T00:00:00Z",
       user: {
         businessName: "Amma's Kitchen",
-        location: "Tamil Nadu, India"
-      }
-    }
+        location: "Tamil Nadu, India",
+      },
+    },
   },
   {
     id: "prod4",
@@ -133,7 +136,7 @@ const mockProducts: ProductWithSupplier[] = [
     quantity: 800,
     images: [
       "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1508747703725-719777637510?w=400&h=300&fit=crop"
+      "https://images.unsplash.com/photo-1508747703725-719777637510?w=400&h=300&fit=crop",
     ],
     isAvailable: true,
     lastUpdated: "2024-01-20T10:30:00Z",
@@ -154,9 +157,9 @@ const mockProducts: ProductWithSupplier[] = [
       updatedAt: "2024-01-20T00:00:00Z",
       user: {
         businessName: "Green Valley Farms",
-        location: "Punjab, India"
-      }
-    }
+        location: "Punjab, India",
+      },
+    },
   },
   {
     id: "prod5",
@@ -169,7 +172,7 @@ const mockProducts: ProductWithSupplier[] = [
     quantity: 1000,
     images: [
       "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
-      "https://images.unsplash.com/photo-1566139170-bbc8b55ebf28?w=400&h=300&fit=crop"
+      "https://images.unsplash.com/photo-1566139170-bbc8b55ebf28?w=400&h=300&fit=crop",
     ],
     isAvailable: true,
     lastUpdated: "2024-01-18T15:45:00Z",
@@ -190,10 +193,10 @@ const mockProducts: ProductWithSupplier[] = [
       updatedAt: "2024-01-18T00:00:00Z",
       user: {
         businessName: "Spice Masters Ltd",
-        location: "Kerala, India"
-      }
-    }
-  }
+        location: "Kerala, India",
+      },
+    },
+  },
 ];
 
 // GET /api/products - Get all products with filtering
@@ -208,49 +211,60 @@ export const getProducts: RequestHandler = (req, res) => {
       onlyVerified,
       search,
       page = 1,
-      limit = 12
+      limit = 12,
     } = req.query as Partial<ProductSearchParams>;
 
     let filteredProducts = [...mockProducts];
 
     // Apply filters
     if (category) {
-      filteredProducts = filteredProducts.filter(p => p.category === category);
+      filteredProducts = filteredProducts.filter(
+        (p) => p.category === category,
+      );
     }
 
     if (location) {
-      filteredProducts = filteredProducts.filter(p => 
-        p.supplier.user.location.toLowerCase().includes(location.toString().toLowerCase())
+      filteredProducts = filteredProducts.filter((p) =>
+        p.supplier.user.location
+          .toLowerCase()
+          .includes(location.toString().toLowerCase()),
       );
     }
 
     if (minPrice) {
-      filteredProducts = filteredProducts.filter(p => p.price >= Number(minPrice));
+      filteredProducts = filteredProducts.filter(
+        (p) => p.price >= Number(minPrice),
+      );
     }
 
     if (maxPrice) {
-      filteredProducts = filteredProducts.filter(p => p.price <= Number(maxPrice));
+      filteredProducts = filteredProducts.filter(
+        (p) => p.price <= Number(maxPrice),
+      );
     }
 
     if (supplierType) {
-      filteredProducts = filteredProducts.filter(p => p.supplier.supplierType === supplierType);
+      filteredProducts = filteredProducts.filter(
+        (p) => p.supplier.supplierType === supplierType,
+      );
     }
 
-    if (onlyVerified === 'true') {
-      filteredProducts = filteredProducts.filter(p => p.supplier.isVerified);
+    if (onlyVerified === "true") {
+      filteredProducts = filteredProducts.filter((p) => p.supplier.isVerified);
     }
 
     if (search) {
       const searchTerm = search.toString().toLowerCase();
-      filteredProducts = filteredProducts.filter(p => 
-        p.name.toLowerCase().includes(searchTerm) ||
-        p.description.toLowerCase().includes(searchTerm) ||
-        p.supplier.user.businessName.toLowerCase().includes(searchTerm)
+      filteredProducts = filteredProducts.filter(
+        (p) =>
+          p.name.toLowerCase().includes(searchTerm) ||
+          p.description.toLowerCase().includes(searchTerm) ||
+          p.supplier.user.businessName.toLowerCase().includes(searchTerm),
       );
     }
 
     // Only show available products
-    filteredProducts = filteredProducts.filter(p => p.isAvailable);
+    filteredProducts = filteredProducts.filter((p) => p.isAvailable);
 
     // Pagination
     const pageNum = Number(page);
@@ -266,15 +280,15 @@ export const getProducts: RequestHandler = (req, res) => {
         total: filteredProducts.length,
         page: pageNum,
         limit: limitNum,
-        totalPages: Math.ceil(filteredProducts.length / limitNum)
-      }
+        totalPages: Math.ceil(filteredProducts.length / limitNum),
+      },
     };
 
     res.json(response);
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Failed to fetch products"
+      error: "Failed to fetch products",
     });
   }
 };
@@ -283,25 +297,25 @@ export const getProducts: RequestHandler = (req, res) => {
 export const getProductById: RequestHandler = (req, res) => {
   try {
     const { id } = req.params;
-    const product = mockProducts.find(p => p.id === id);
+    const product = mockProducts.find((p) => p.id === id);
 
     if (!product) {
       return res.status(404).json({
         success: false,
-        error: "Product not found"
+        error: "Product not found",
       });
     }
 
     const response: ApiResponse<ProductWithSupplier> = {
       success: true,
-      data: product
+      data: product,
     };
 
     res.json(response);
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Failed to fetch product"
+      error: "Failed to fetch product",
     });
   }
 };
@@ -309,41 +323,59 @@ export const getProductById: RequestHandler = (req, res) => {
 // GET /api/products/categories - Get product categories with counts
 export const getProductCategories: RequestHandler = (req, res) => {
   try {
-    const categories = mockProducts.reduce((acc, product) => {
-      const category = product.category;
-      if (!acc[category]) {
-        acc[category] = {
-          category,
-          count: 0,
-          averagePrice: 0,
-          verified: 0
-        };
-      }
-      acc[category].count++;
-      if (product.supplier.isVerified) {
-        acc[category].verified++;
-      }
-      return acc;
-    }, {} as Record<ProductCategory, { category: ProductCategory; count: number; averagePrice: number; verified: number }>);
+    const categories = mockProducts.reduce(
+      (acc, product) => {
+        const category = product.category;
+        if (!acc[category]) {
+          acc[category] = {
+            category,
+            count: 0,
+            averagePrice: 0,
+            verified: 0,
+          };
+        }
+        acc[category].count++;
+        if (product.supplier.isVerified) {
+          acc[category].verified++;
+        }
+        return acc;
+      },
+      {} as Record<
+        ProductCategory,
+        {
+          category: ProductCategory;
+          count: number;
+          averagePrice: number;
+          verified: number;
+        }
+      >,
+    );
 
     // Calculate average prices
-    Object.keys(categories).forEach(category => {
-      const productsOfCategory = mockProducts.filter(p => p.category === category as ProductCategory);
-      const totalPrice = productsOfCategory.reduce((sum, p) => sum + p.price, 0);
-      categories[category as ProductCategory].averagePrice = 
-        productsOfCategory.length > 0 ? Math.round(totalPrice / productsOfCategory.length) : 0;
+    Object.keys(categories).forEach((category) => {
+      const productsOfCategory = mockProducts.filter(
+        (p) => p.category === (category as ProductCategory),
+      );
+      const totalPrice = productsOfCategory.reduce(
+        (sum, p) => sum + p.price,
+        0,
+      );
+      categories[category as ProductCategory].averagePrice =
+        productsOfCategory.length > 0
+          ? Math.round(totalPrice / productsOfCategory.length)
+          : 0;
     });
 
     const response: ApiResponse<typeof categories> = {
       success: true,
-      data: categories
+      data: categories,
     };
 
     res.json(response);
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Failed to fetch product categories"
+      error: "Failed to fetch product categories",
     });
   }
 };
@@ -352,10 +384,10 @@ export const getProductCategories: RequestHandler = (req, res) => {
 export const createProduct: RequestHandler = (req, res) => {
   try {
     const productData = req.body as CreateProductRequest;
-    
+
     // In a real app, you'd get the supplier ID from the authenticated user
     const supplierId = "sup1"; // Mock supplier ID
-    
+
     const newProduct: Product = {
       id: `prod${Date.now()}`,
       supplierId,
@@ -363,7 +395,7 @@ export const createProduct: RequestHandler = (req, res) => {
       images: productData.images || [],
       isAvailable: true,
       lastUpdated: new Date().toISOString(),
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     // In a real app, you'd save this to the database
@@ -372,14 +404,14 @@ export const createProduct: RequestHandler = (req, res) => {
     const response: ApiResponse<Product> = {
       success: true,
       data: newProduct,
-      message: "Product created successfully"
+      message: "Product created successfully",
     };
 
     res.status(201).json(response);
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Failed to create product"
+      error: "Failed to create product",
     });
   }
 };
@@ -389,12 +421,12 @@ export const updateProduct: RequestHandler = (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body as UpdateProductRequest;
-    
-    const productIndex = mockProducts.findIndex(p => p.id === id);
+
+    const productIndex = mockProducts.findIndex((p) => p.id === id);
     if (productIndex === -1) {
       return res.status(404).json({
         success: false,
-        error: "Product not found"
+        error: "Product not found",
       });
     }
 
@@ -402,7 +434,7 @@ export const updateProduct: RequestHandler = (req, res) => {
     const updatedProduct = {
       ...mockProducts[productIndex],
       ...updateData,
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString(),
     };
 
     mockProducts[productIndex] = updatedProduct;
@@ -410,14 +442,14 @@ export const updateProduct: RequestHandler = (req, res) => {
     const response: ApiResponse<ProductWithSupplier> = {
       success: true,
       data: updatedProduct,
-      message: "Product updated successfully"
+      message: "Product updated successfully",
     };
 
     res.json(response);
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "Failed to update product"
+      error: "Failed to update product",
     });
   }
 };

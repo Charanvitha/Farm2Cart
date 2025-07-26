@@ -1,7 +1,16 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { VerificationBadge, TrustScore } from "@/components/ui/verification-badge";
+import {
+  VerificationBadge,
+  TrustScore,
+} from "@/components/ui/verification-badge";
 import { MapPin, ShoppingCart, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -34,21 +43,21 @@ export interface ProductCardProps {
   className?: string;
 }
 
-export function ProductCard({ 
-  product, 
-  onAddToCart, 
+export function ProductCard({
+  product,
+  onAddToCart,
   onViewDetails,
-  className 
+  className,
 }: ProductCardProps) {
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
       vegetables: "bg-green-100 text-green-800",
-      fruits: "bg-orange-100 text-orange-800", 
+      fruits: "bg-orange-100 text-orange-800",
       oils: "bg-yellow-100 text-yellow-800",
       spices: "bg-red-100 text-red-800",
       dairy: "bg-blue-100 text-blue-800",
       packaging: "bg-gray-100 text-gray-800",
-      grains: "bg-amber-100 text-amber-800"
+      grains: "bg-amber-100 text-amber-800",
     };
     return colors[category] || "bg-gray-100 text-gray-800";
   };
@@ -58,24 +67,31 @@ export function ProductCard({
   };
 
   const getAvailabilityStatus = (quantity: number) => {
-    if (quantity === 0) return { label: "Out of Stock", color: "bg-red-100 text-red-800" };
-    if (quantity < 10) return { label: "Low Stock", color: "bg-orange-100 text-orange-800" };
+    if (quantity === 0)
+      return { label: "Out of Stock", color: "bg-red-100 text-red-800" };
+    if (quantity < 10)
+      return { label: "Low Stock", color: "bg-orange-100 text-orange-800" };
     return { label: "In Stock", color: "bg-green-100 text-green-800" };
   };
 
   const availability = getAvailabilityStatus(product.quantity);
 
   return (
-    <Card className={cn("hover:shadow-lg transition-shadow border-farm-200", className)}>
+    <Card
+      className={cn(
+        "hover:shadow-lg transition-shadow border-farm-200",
+        className,
+      )}
+    >
       {/* Product Image */}
       <div className="relative">
         {product.images.length > 0 ? (
-          <img 
-            src={product.images[0]} 
+          <img
+            src={product.images[0]}
             alt={product.name}
             className="w-full h-48 object-cover rounded-t-lg"
             onError={(e) => {
-              (e.target as HTMLImageElement).src = '/placeholder.svg';
+              (e.target as HTMLImageElement).src = "/placeholder.svg";
             }}
           />
         ) : (
@@ -83,9 +99,14 @@ export function ProductCard({
             <Package className="h-12 w-12 text-farm-400" />
           </div>
         )}
-        
+
         {/* Category Badge */}
-        <Badge className={cn("absolute top-2 left-2", getCategoryColor(product.category))}>
+        <Badge
+          className={cn(
+            "absolute top-2 left-2",
+            getCategoryColor(product.category),
+          )}
+        >
           {product.category}
         </Badge>
 
@@ -104,7 +125,7 @@ export function ProductCard({
             <CardDescription className="text-sm text-farm-600 line-clamp-2 mb-2">
               {product.description}
             </CardDescription>
-            
+
             {/* Price */}
             <div className="text-xl font-bold text-farm-600 mb-2">
               {formatPrice(product.price, product.unit)}
@@ -134,10 +155,14 @@ export function ProductCard({
             )}
             {product.supplier.verifiedBadges.map((badge, index) => {
               if (badge.toLowerCase().includes("organic")) {
-                return <VerificationBadge key={index} type="organic" size="sm" />;
+                return (
+                  <VerificationBadge key={index} type="organic" size="sm" />
+                );
               }
               if (badge.toLowerCase().includes("quality")) {
-                return <VerificationBadge key={index} type="quality" size="sm" />;
+                return (
+                  <VerificationBadge key={index} type="quality" size="sm" />
+                );
               }
               return null;
             })}
@@ -145,7 +170,7 @@ export function ProductCard({
 
           {/* Trust Score */}
           {product.supplier.trustScore > 0 && (
-            <TrustScore 
+            <TrustScore
               score={product.supplier.trustScore}
               totalRatings={product.supplier.totalRatings}
               size="sm"
@@ -160,12 +185,14 @@ export function ProductCard({
         {/* Quantity Available */}
         <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
           <span>Available:</span>
-          <span className="font-medium">{product.quantity} {product.unit}</span>
+          <span className="font-medium">
+            {product.quantity} {product.unit}
+          </span>
         </div>
 
         {/* Action Buttons */}
         <div className="flex gap-2">
-          <Button 
+          <Button
             onClick={() => onViewDetails?.(product.id)}
             variant="outline"
             className="flex-1 border-farm-600 text-farm-600 hover:bg-farm-50"
@@ -173,7 +200,7 @@ export function ProductCard({
           >
             View Details
           </Button>
-          <Button 
+          <Button
             onClick={() => onAddToCart?.(product.id)}
             className="flex-1 bg-farm-600 hover:bg-farm-700 text-white"
             size="sm"

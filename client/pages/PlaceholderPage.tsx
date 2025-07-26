@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ShoppingCart, ArrowLeft, Construction } from "lucide-react";
 
 interface PlaceholderPageProps {
@@ -9,10 +15,10 @@ interface PlaceholderPageProps {
   icon?: React.ReactNode;
 }
 
-export default function PlaceholderPage({ 
-  title, 
-  description, 
-  icon = <Construction className="h-8 w-8 text-farm-600" /> 
+export default function PlaceholderPage({
+  title,
+  description,
+  icon = <Construction className="h-8 w-8 text-farm-600" />,
 }: PlaceholderPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-farm-50 to-fresh-50">
@@ -26,7 +32,10 @@ export default function PlaceholderPage({
             <span className="text-2xl font-bold text-farm-800">Farm2Cart</span>
           </Link>
           <Link to="/">
-            <Button variant="ghost" className="text-farm-700 hover:text-farm-800 hover:bg-farm-100">
+            <Button
+              variant="ghost"
+              className="text-farm-700 hover:text-farm-800 hover:bg-farm-100"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Home
             </Button>
@@ -48,7 +57,8 @@ export default function PlaceholderPage({
           </CardHeader>
           <CardContent>
             <p className="text-farm-700 mb-6">
-              This page is coming soon! We're working hard to bring you the best experience.
+              This page is coming soon! We're working hard to bring you the best
+              experience.
             </p>
             <div className="space-y-3">
               <Link to="/">
@@ -57,7 +67,10 @@ export default function PlaceholderPage({
                 </Button>
               </Link>
               <Link to="/login">
-                <Button variant="outline" className="w-full border-farm-600 text-farm-600 hover:bg-farm-50">
+                <Button
+                  variant="outline"
+                  className="w-full border-farm-600 text-farm-600 hover:bg-farm-50"
+                >
                   Sign In
                 </Button>
               </Link>
