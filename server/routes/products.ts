@@ -58,7 +58,10 @@ const mockProducts: ProductWithSupplier[] = [
     price: 150,
     unit: "liter",
     quantity: 200,
-    images: ["https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400"],
+    images: [
+      "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1628744448840-55bdb2497bd4?w=400&h=300&fit=crop"
+    ],
     isAvailable: true,
     lastUpdated: "2024-01-18T15:45:00Z",
     createdAt: "2024-01-10T00:00:00Z",
