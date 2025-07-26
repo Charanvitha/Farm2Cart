@@ -608,7 +608,7 @@ export default function Index() {
                   supplier="Green Valley Farms"
                   supplierType="farmer"
                   trustScore={4.8}
-                  image="https://images.unsplash.com/photo-1546470427-e26264be0b0c?w=400&h=300&fit=crop"
+                  image="https://cdn.builder.io/api/v1/image/assets%2F9b8a3fe08bb1420195d645ec6bc47e63%2F48bb0684298f460da28786599c26c601?format=webp"
                   category="vegetables"
                 />
                 <FeaturedProductCard
