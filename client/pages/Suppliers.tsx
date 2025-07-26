@@ -49,7 +49,7 @@ export default function Suppliers() {
   const fetchSuppliers = async () => {
     try {
       setLoading(true);
-      
+
       const params = new URLSearchParams();
       if (searchTerm) params.append("search", searchTerm);
       if (supplierType !== "all") params.append("supplierType", supplierType);
@@ -58,16 +58,25 @@ export default function Suppliers() {
       params.append("page", currentPage.toString());
       params.append("limit", "12");
 
-      const baseUrl = window.location.origin;
-      const response = await fetch(`${baseUrl}/api/suppliers?${params.toString()}`);
+      const response = await fetch(`/api/suppliers?${params.toString()}`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data: ApiResponse<PaginatedResponse<Supplier>> = await response.json();
-      
+
       if (data.success && data.data) {
         setSuppliers(data.data.data);
         setTotalCount(data.data.total);
+      } else {
+        console.error("API returned error:", data);
+        // Could show a user-friendly error message here
       }
     } catch (error) {
       console.error("Failed to fetch suppliers:", error);
+      // Could show a user-friendly error message here
+      // For now, just keep suppliers empty which will show the "no suppliers found" state
     } finally {
       setLoading(false);
     }
