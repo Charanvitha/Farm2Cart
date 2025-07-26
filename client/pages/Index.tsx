@@ -171,16 +171,19 @@ export default function Index() {
     try {
       setLoading(true);
 
+      // Use absolute URLs for API calls
+      const baseUrl = window.location.origin;
+
       // Fetch suppliers
-      const suppliersResponse = await fetch('/api/suppliers?onlyVerified=true&limit=3');
+      const suppliersResponse = await fetch(`${baseUrl}/api/suppliers?onlyVerified=true&limit=3`);
       const suppliersData: ApiResponse<PaginatedResponse<any>> = await suppliersResponse.json();
 
       // Fetch products
-      const productsResponse = await fetch('/api/products?onlyVerified=true&limit=4');
+      const productsResponse = await fetch(`${baseUrl}/api/products?onlyVerified=true&limit=4`);
       const productsData: ApiResponse<PaginatedResponse<ProductWithSupplier>> = await productsResponse.json();
 
       // Fetch admin stats
-      const statsResponse = await fetch('/api/admin/stats');
+      const statsResponse = await fetch(`${baseUrl}/api/admin/stats`);
       const statsData: ApiResponse<any> = await statsResponse.json();
 
       if (suppliersData.success && suppliersData.data) {
