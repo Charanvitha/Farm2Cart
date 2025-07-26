@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +19,7 @@ import {
   Zap,
   Package
 } from "lucide-react";
+import type { ApiResponse, PaginatedResponse, ProductWithSupplier } from "@shared/api";
 
 // Featured Supplier Card Component
 function FeaturedSupplierCard({
