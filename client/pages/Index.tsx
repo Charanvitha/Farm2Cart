@@ -137,6 +137,41 @@ function FeaturedProductCard({
 }
 
 export default function Index() {
+  const [featuredSuppliers, setFeaturedSuppliers] = useState<any[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<ProductWithSupplier[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFeaturedData();
+  }, []);
+
+  const fetchFeaturedData = async () => {
+    try {
+      setLoading(true);
+
+      // Fetch suppliers
+      const suppliersResponse = await fetch('/api/suppliers?onlyVerified=true&limit=3');
+      const suppliersData: ApiResponse<PaginatedResponse<any>> = await suppliersResponse.json();
+
+      // Fetch products
+      const productsResponse = await fetch('/api/products?onlyVerified=true&limit=4');
+      const productsData: ApiResponse<PaginatedResponse<ProductWithSupplier>> = await productsResponse.json();
+
+      if (suppliersData.success && suppliersData.data) {
+        setFeaturedSuppliers(suppliersData.data.data);
+      }
+
+      if (productsData.success && productsData.data) {
+        setFeaturedProducts(productsData.data.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch featured data:', error);
+      // Keep the component functional with empty arrays
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const benefits = [
     {
       icon: <Truck className="h-8 w-8 text-farm-600" />,
