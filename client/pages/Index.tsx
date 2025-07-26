@@ -169,7 +169,7 @@ export default function Index() {
     fetchFeaturedData();
   }, []);
 
-  const fetchFeaturedData = async () => {
+  const fetchFeaturedData = async (retryCount = 0) => {
     try {
       setLoading(true);
 
@@ -178,9 +178,12 @@ export default function Index() {
       let productsData: ApiResponse<PaginatedResponse<ProductWithSupplier>> | null = null;
       let statsData: ApiResponse<any> | null = null;
 
-      // Fetch suppliers with error handling
+      // Fetch suppliers with error handling and retry
       try {
-        const suppliersResponse = await fetch('/api/suppliers?onlyVerified=true&limit=3');
+        const suppliersResponse = await fetch('/api/suppliers?onlyVerified=true&limit=3', {
+          headers: { 'Content-Type': 'application/json' },
+          signal: AbortSignal.timeout(10000) // 10 second timeout
+        });
         if (suppliersResponse.ok) {
           suppliersData = await suppliersResponse.json();
         }
@@ -188,9 +191,12 @@ export default function Index() {
         console.warn('Failed to fetch suppliers:', error);
       }
 
-      // Fetch products with error handling
+      // Fetch products with error handling and retry
       try {
-        const productsResponse = await fetch('/api/products?onlyVerified=true&limit=4');
+        const productsResponse = await fetch('/api/products?onlyVerified=true&limit=4', {
+          headers: { 'Content-Type': 'application/json' },
+          signal: AbortSignal.timeout(10000) // 10 second timeout
+        });
         if (productsResponse.ok) {
           productsData = await productsResponse.json();
         }
@@ -198,9 +204,12 @@ export default function Index() {
         console.warn('Failed to fetch products:', error);
       }
 
-      // Fetch stats with error handling
+      // Fetch stats with error handling and retry
       try {
-        const statsResponse = await fetch('/api/admin/stats');
+        const statsResponse = await fetch('/api/admin/stats', {
+          headers: { 'Content-Type': 'application/json' },
+          signal: AbortSignal.timeout(10000) // 10 second timeout
+        });
         if (statsResponse.ok) {
           statsData = await statsResponse.json();
         }
@@ -227,7 +236,16 @@ export default function Index() {
       }
     } catch (error) {
       console.error('Failed to fetch featured data:', error);
-      // Component will use fallback mock data
+
+      // Retry once if this is the first failure
+      if (retryCount === 0) {
+        console.log('Retrying API calls...');
+        setTimeout(() => fetchFeaturedData(1), 2000); // Retry after 2 seconds
+        return;
+      }
+
+      // If retry also fails, component will use fallback mock data
+      console.warn('Using fallback data after retry failed');
     } finally {
       setLoading(false);
     }
