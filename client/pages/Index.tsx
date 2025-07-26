@@ -177,6 +177,10 @@ export default function Index() {
       const productsResponse = await fetch('/api/products?onlyVerified=true&limit=4');
       const productsData: ApiResponse<PaginatedResponse<ProductWithSupplier>> = await productsResponse.json();
 
+      // Fetch admin stats
+      const statsResponse = await fetch('/api/admin/stats');
+      const statsData: ApiResponse<any> = await statsResponse.json();
+
       if (suppliersData.success && suppliersData.data) {
         setFeaturedSuppliers(suppliersData.data.data);
       }
@@ -184,9 +188,18 @@ export default function Index() {
       if (productsData.success && productsData.data) {
         setFeaturedProducts(productsData.data.data);
       }
+
+      if (statsData.success && statsData.data) {
+        setStats({
+          totalVendors: statsData.data.totalVendors,
+          totalSuppliers: statsData.data.totalSuppliers,
+          totalProducts: statsData.data.totalProducts,
+          customerSatisfaction: 98 // Mock satisfaction percentage
+        });
+      }
     } catch (error) {
       console.error('Failed to fetch featured data:', error);
-      // Keep the component functional with empty arrays
+      // Keep the component functional with default values
     } finally {
       setLoading(false);
     }
