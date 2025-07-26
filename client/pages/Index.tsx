@@ -171,30 +171,51 @@ export default function Index() {
     try {
       setLoading(true);
 
-      // Use absolute URLs for API calls
-      const baseUrl = window.location.origin;
+      // Try to fetch data, but gracefully handle failures
+      let suppliersData: ApiResponse<PaginatedResponse<any>> | null = null;
+      let productsData: ApiResponse<PaginatedResponse<ProductWithSupplier>> | null = null;
+      let statsData: ApiResponse<any> | null = null;
 
-      // Fetch suppliers
-      const suppliersResponse = await fetch(`${baseUrl}/api/suppliers?onlyVerified=true&limit=3`);
-      const suppliersData: ApiResponse<PaginatedResponse<any>> = await suppliersResponse.json();
+      // Fetch suppliers with error handling
+      try {
+        const suppliersResponse = await fetch('/api/suppliers?onlyVerified=true&limit=3');
+        if (suppliersResponse.ok) {
+          suppliersData = await suppliersResponse.json();
+        }
+      } catch (error) {
+        console.warn('Failed to fetch suppliers:', error);
+      }
 
-      // Fetch products
-      const productsResponse = await fetch(`${baseUrl}/api/products?onlyVerified=true&limit=4`);
-      const productsData: ApiResponse<PaginatedResponse<ProductWithSupplier>> = await productsResponse.json();
+      // Fetch products with error handling
+      try {
+        const productsResponse = await fetch('/api/products?onlyVerified=true&limit=4');
+        if (productsResponse.ok) {
+          productsData = await productsResponse.json();
+        }
+      } catch (error) {
+        console.warn('Failed to fetch products:', error);
+      }
 
-      // Fetch admin stats
-      const statsResponse = await fetch(`${baseUrl}/api/admin/stats`);
-      const statsData: ApiResponse<any> = await statsResponse.json();
+      // Fetch stats with error handling
+      try {
+        const statsResponse = await fetch('/api/admin/stats');
+        if (statsResponse.ok) {
+          statsData = await statsResponse.json();
+        }
+      } catch (error) {
+        console.warn('Failed to fetch stats:', error);
+      }
 
-      if (suppliersData.success && suppliersData.data) {
+      // Update state with successful responses
+      if (suppliersData?.success && suppliersData.data) {
         setFeaturedSuppliers(suppliersData.data.data);
       }
 
-      if (productsData.success && productsData.data) {
+      if (productsData?.success && productsData.data) {
         setFeaturedProducts(productsData.data.data);
       }
 
-      if (statsData.success && statsData.data) {
+      if (statsData?.success && statsData.data) {
         setStats({
           totalVendors: statsData.data.totalVendors,
           totalSuppliers: statsData.data.totalSuppliers,
@@ -204,7 +225,7 @@ export default function Index() {
       }
     } catch (error) {
       console.error('Failed to fetch featured data:', error);
-      // Keep the component functional with default values
+      // Component will use fallback mock data
     } finally {
       setLoading(false);
     }
