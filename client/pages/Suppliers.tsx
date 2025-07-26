@@ -58,7 +58,8 @@ export default function Suppliers() {
       params.append("page", currentPage.toString());
       params.append("limit", "12");
 
-      const response = await fetch(`/api/suppliers?${params.toString()}`);
+      const baseUrl = window.location.origin;
+      const response = await fetch(`${baseUrl}/api/suppliers?${params.toString()}`);
       const data: ApiResponse<PaginatedResponse<Supplier>> = await response.json();
       
       if (data.success && data.data) {
