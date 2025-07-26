@@ -608,7 +608,7 @@ export default function Index() {
                   supplier="Green Valley Farms"
                   supplierType="farmer"
                   trustScore={4.8}
-                  image="https://images.unsplash.com/photo-1546470427-e26264be0b0c?w=400"
+                  image="https://images.unsplash.com/photo-1546470427-e26264be0b0c?w=400&h=300&fit=crop"
                   category="vegetables"
                 />
                 <FeaturedProductCard
@@ -618,7 +618,7 @@ export default function Index() {
                   supplier="Spice Masters Ltd"
                   supplierType="wholesaler"
                   trustScore={4.6}
-                  image="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400"
+                  image="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=300&fit=crop"
                   category="oils"
                 />
                 <FeaturedProductCard
@@ -628,7 +628,7 @@ export default function Index() {
                   supplier="Amma's Kitchen"
                   supplierType="home_producer"
                   trustScore={4.9}
-                  image="https://images.unsplash.com/photo-1596040033229-a9821ebc227e?w=400"
+                  image="https://images.unsplash.com/photo-1596040033229-a9821ebc227e?w=400&h=300&fit=crop"
                   category="spices"
                 />
                 <FeaturedProductCard
@@ -638,7 +638,7 @@ export default function Index() {
                   supplier="Green Valley Farms"
                   supplierType="farmer"
                   trustScore={4.8}
-                  image="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400"
+                  image="https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&h=300&fit=crop"
                   category="vegetables"
                 />
               </>
