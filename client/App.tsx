@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Suppliers from "./pages/Suppliers";
 import Products from "./pages/Products";
+import SupplierVerification from "./pages/SupplierVerification";
 import VendorDashboard from "./pages/VendorDashboard";
 import SupplierDashboard from "./pages/SupplierDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
