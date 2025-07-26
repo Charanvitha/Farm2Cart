@@ -18,42 +18,58 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 142 71% 45%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 60 9% 96%;
+    --secondary-foreground: 142 71% 45%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 60 9% 96%;
+    --muted-foreground: 25 5% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 142 76% 36%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 20 5% 90%;
+    --input: 20 5% 90%;
+    --ring: 142 71% 45%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Farm2Cart brand colors */
+    --farm-50: 138 76% 97%;
+    --farm-100: 140 84% 92%;
+    --farm-200: 141 78% 85%;
+    --farm-300: 142 77% 73%;
+    --farm-400: 142 69% 58%;
+    --farm-500: 142 71% 45%;
+    --farm-600: 142 76% 36%;
+    --farm-700: 142 85% 28%;
+    --farm-800: 143 87% 23%;
+    --farm-900: 144 61% 20%;
+
+    --fresh-50: 60 100% 97%;
+    --fresh-100: 56 100% 91%;
+    --fresh-200: 61 100% 81%;
+    --fresh-300: 64 100% 68%;
+    --fresh-400: 65 84% 58%;
+    --fresh-500: 65 59% 51%;
+    --fresh-600: 64 75% 42%;
+    --fresh-700: 64 85% 35%;
+    --fresh-800: 65 91% 29%;
+    --fresh-900: 64 86% 24%;
   }
 
   .dark {
