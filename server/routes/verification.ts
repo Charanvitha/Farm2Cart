@@ -143,7 +143,7 @@ export const uploadLivePhoto: RequestHandler = async (req, res) => {
     const imageUrl = `https://example.com/live/${photoId}.jpg`;
     
     // Mock AI analysis
-    const aiAnalysis = await analyzeImage(imageData, 'live_inventory');
+    const aiAnalysis = await runAIImageAnalysis(imageData, 'live_inventory');
     
     const newPhoto: LiveInventoryPhoto = {
       id: photoId,
