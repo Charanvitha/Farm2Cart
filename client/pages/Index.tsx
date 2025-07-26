@@ -698,9 +698,9 @@ export default function Index() {
             <div>
               <h4 className="font-semibold mb-4">For Vendors</h4>
               <ul className="space-y-2 text-farm-300">
-                <li><Link to="/vendors" className="hover:text-white transition-colors">Browse Suppliers</Link></li>
-                <li><Link to="/vendors/orders" className="hover:text-white transition-colors">Track Orders</Link></li>
-                <li><Link to="/vendors/help" className="hover:text-white transition-colors">Help Center</Link></li>
+                <li><Link to="/suppliers" className="hover:text-white transition-colors">Browse Suppliers</Link></li>
+                <li><Link to="/vendor/orders" className="hover:text-white transition-colors">Track Orders</Link></li>
+                <li><Link to="/vendor/help" className="hover:text-white transition-colors">Help Center</Link></li>
               </ul>
             </div>
             <div>
