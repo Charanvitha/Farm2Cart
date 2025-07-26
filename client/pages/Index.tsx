@@ -628,7 +628,7 @@ export default function Index() {
                   supplier="Amma's Kitchen"
                   supplierType="home_producer"
                   trustScore={4.9}
-                  image="https://images.unsplash.com/photo-1596040033229-a9821ebc227e?w=400&h=300&fit=crop"
+                  image="https://cdn.builder.io/api/v1/image/assets%2F9b8a3fe08bb1420195d645ec6bc47e63%2Fa438956c61f949b1bac7c4d352702776"
                   category="spices"
                 />
                 <FeaturedProductCard
