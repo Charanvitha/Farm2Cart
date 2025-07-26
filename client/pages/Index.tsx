@@ -429,6 +429,67 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Authenticity Features */}
+      <section className="py-20 px-4 bg-white">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-farm-900 mb-4">
+              🔍 Ensuring Raw Material Authenticity
+            </h2>
+            <p className="text-xl text-farm-700 max-w-2xl mx-auto">
+              Advanced verification system to prevent D-Mart bills and fake inventory
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="border-farm-200 hover:shadow-lg transition-shadow">
+              <CardHeader className="text-center">
+                <div className="mx-auto bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                  <FileText className="h-8 w-8 text-blue-600" />
+                </div>
+                <CardTitle className="text-farm-800">📋 Bill Verification</CardTitle>
+                <CardDescription className="text-farm-600">
+                  Upload mandi receipts, harvest logs, and original purchase bills.
+                  <strong className="text-red-600"> No D-Mart bills allowed!</strong>
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-farm-200 hover:shadow-lg transition-shadow">
+              <CardHeader className="text-center">
+                <div className="mx-auto bg-green-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                  <Camera className="h-8 w-8 text-green-600" />
+                </div>
+                <CardTitle className="text-farm-800">📸 Live Photo Capture</CardTitle>
+                <CardDescription className="text-farm-600">
+                  Real-time inventory photos with GPS tagging and timestamp watermarks.
+                  <strong>No Google downloads!</strong>
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-farm-200 hover:shadow-lg transition-shadow">
+              <CardHeader className="text-center">
+                <div className="mx-auto bg-purple-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-4">
+                  <Zap className="h-8 w-8 text-purple-600" />
+                </div>
+                <CardTitle className="text-farm-800">🤖 AI Detection</CardTitle>
+                <CardDescription className="text-farm-600">
+                  Automatic detection of duplicate images, retail store shelves,
+                  and stock photos to ensure authenticity.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+          <div className="text-center mt-12">
+            <Link to="/verification">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4">
+                🔍 Access Verification System
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* How it Works */}
       <section id="how-it-works" className="py-20 px-4">
         <div className="container mx-auto">
