@@ -22,7 +22,7 @@ const mockProducts: ProductWithSupplier[] = [
     unit: "kg",
     quantity: 500,
     images: [
-      "https://images.unsplash.com/photo-1546470427-e26264be0b0c?w=400&h=300&fit=crop",
+      "https://cdn.builder.io/api/v1/image/assets%2F9b8a3fe08bb1420195d645ec6bc47e63%2F48bb0684298f460da28786599c26c601?format=webp",
       "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&h=300&fit=crop",
       "https://images.unsplash.com/photo-1571771019784-3ff35f4f4277?w=400&h=300&fit=crop"
     ],
