@@ -270,8 +270,10 @@ export default function Index() {
             <span className="text-2xl font-bold text-farm-800">Farm2Cart</span>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/suppliers" className="text-farm-700 hover:text-farm-800 transition-colors font-medium">
+              Browse Suppliers
+            </Link>
             <a href="#how-it-works" className="text-farm-700 hover:text-farm-800 transition-colors">How it Works</a>
-            <a href="#suppliers" className="text-farm-700 hover:text-farm-800 transition-colors">Suppliers</a>
             <a href="#benefits" className="text-farm-700 hover:text-farm-800 transition-colors">Benefits</a>
           </nav>
           <div className="flex items-center space-x-3">
