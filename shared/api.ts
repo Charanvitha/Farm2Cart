@@ -182,11 +182,116 @@ export interface SupplierSearchParams {
   limit?: number;
 }
 
+// Document Verification Types
+export type DocumentType = 'purchase_bill' | 'mandi_receipt' | 'harvest_log' | 'business_license' | 'identity_proof' | 'food_safety_cert';
+
+export interface UploadedDocument {
+  id: string;
+  type: DocumentType;
+  fileName: string;
+  fileUrl: string;
+  uploadedAt: string;
+  verificationStatus: 'pending' | 'verified' | 'rejected';
+  rejectionReason?: string;
+  metadata?: {
+    fileSize: number;
+    mimeType: string;
+    originalName: string;
+  };
+}
+
+// Live Photo Verification Types
+export interface LiveInventoryPhoto {
+  id: string;
+  productId: string;
+  supplierId: string;
+  imageUrl: string;
+  capturedAt: string;
+  gpsLocation?: {
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+  };
+  deviceInfo: {
+    userAgent: string;
+    timestamp: string;
+    timezone: string;
+  };
+  verificationStatus: 'pending' | 'verified' | 'flagged' | 'rejected';
+  aiAnalysis?: {
+    isRealTime: boolean;
+    duplicateScore: number;
+    retailStoreDetected: boolean;
+    confidence: number;
+  };
+}
+
+// AI Image Analysis Types
+export interface ImageAnalysisResult {
+  imageId: string;
+  analysis: {
+    isDuplicate: boolean;
+    duplicateScore: number;
+    retailStoreDetected: boolean;
+    stockPhotoLikelihood: number;
+    inappropriateContent: boolean;
+    confidence: number;
+    flags: string[];
+  };
+  createdAt: string;
+}
+
+// Verification Requests
+export interface DocumentUploadRequest {
+  type: DocumentType;
+  supplierId: string;
+  file: File | string; // File object or base64 string
+  metadata?: {
+    originalName: string;
+    description?: string;
+  };
+}
+
+export interface LivePhotoRequest {
+  productId: string;
+  supplierId: string;
+  imageData: string; // base64 image data
+  gpsLocation?: {
+    latitude: number;
+    longitude: number;
+    accuracy: number;
+  };
+  deviceInfo: {
+    userAgent: string;
+    timestamp: string;
+    timezone: string;
+  };
+}
+
+export interface ImageVerificationRequest {
+  imageUrl: string;
+  type: 'product' | 'document' | 'live_inventory';
+  supplierId: string;
+  productId?: string;
+}
+
 // Admin interfaces
 export interface VerifySupplierRequest {
   supplierId: string;
   status: 'verified' | 'rejected';
   badges?: string[];
+  reason?: string;
+}
+
+export interface VerifyDocumentRequest {
+  documentId: string;
+  status: 'verified' | 'rejected';
+  reason?: string;
+}
+
+export interface VerifyLivePhotoRequest {
+  photoId: string;
+  status: 'verified' | 'flagged' | 'rejected';
   reason?: string;
 }
 
@@ -196,5 +301,8 @@ export interface AdminStats {
   totalProducts: number;
   totalOrders: number;
   pendingVerifications: number;
+  pendingDocuments: number;
+  pendingLivePhotos: number;
+  flaggedImages: number;
   averageTrustScore: number;
 }
