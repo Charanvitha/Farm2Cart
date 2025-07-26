@@ -89,5 +89,15 @@ export function createServer() {
   app.post("/api/admin/resolve-flag", resolveFlag);
   app.get("/api/admin/trust-scores", getTrustScoreAnalytics);
 
+  // Verification API - Document & Photo Authentication
+  app.post("/api/verification/upload-document", uploadDocument);
+  app.post("/api/verification/live-photo", uploadLivePhoto);
+  app.post("/api/verification/analyze-image", analyzeImage);
+  app.get("/api/verification/documents/:supplierId", getSupplierDocuments);
+  app.get("/api/verification/live-photos/:supplierId", getSupplierLivePhotos);
+  app.get("/api/verification/pending-reviews", getPendingReviews);
+  app.post("/api/verification/verify-document", verifyDocument);
+  app.post("/api/verification/verify-live-photo", verifyLivePhoto);
+
   return app;
 }
